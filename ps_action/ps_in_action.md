@@ -153,5 +153,33 @@ $module = Import-Module PsToolset -Alias parse -AsCustomObject
 # To debug module loading
 ipmo PSToolset -Verbose
 
+# Unassign a variable
+Remove-Item -verbose variable:total
+```
 
+## Chapter 10 - Metaprogramming
+
+```xml
+<Types>
+  <Type>
+    <Name>System.Array</Name>
+    <Members>
+      <ScriptMethod>
+        <Name>Sum</Name>
+        <Script>
+          $r = $null
+          foreach( $e in $this ) { $r += $e }
+          $r
+        </Script>
+      </ScriptMethod>
+    </Members>
+  </Type>
+</Types>
+```
+
+```ps1
+# Add Sum extension method to an array
+Update-TypeData SumMethod.ps1xml
+(1,2,3,4,5).Sum()
+(@{a=1},@{b=2},@{c=3}).Sum()
 ```
