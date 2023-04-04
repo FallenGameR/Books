@@ -101,3 +101,57 @@ $p = @{x="first"; y="second"}
 s -z "third" @p 1 2 3
 # first,second,third,1 2 3
 ```
+
+## Chapter 5 - Control Flow
+
+```ps1
+# Access iterators directly
+foreach( $i in 1..10 ){ [void] $foreach.MoveNext(); $i + $foreach.Current }
+
+# Access switch iterator directly (useful for arg parser)
+switch( $options ) {
+  '-force' { $force = $true }
+  '-file' { [void] $switch.MoveNext(); $file = $switch.Current }
+}
+
+# Use named tags to break particular loop
+$tag = 'outer'
+:outer while( $true ) {
+  while( $true ) { break $tag }
+}
+
+# Start, Process, End scripts in regular foreach
+gps svchost | foreach {$h=0} {$h+=$_.handles} {$h}
+
+# Pass arguments for method invocations in foreach
+'test', 'me' | foreach Replace -ArgumentList 'st', 'hi'
+
+# Access input argument directly
+function sum{
+  $total = 0
+  while( $input.MoveNext() ) {
+    $total += $input.Current
+  }
+  $total
+}
+
+# WhatIf syntax support
+# [CmdletBinding(SupportsShouldProcess=$true)] # adds -WhatIf switch
+# if( $PSCmdlet.ShouldProcess($target, $operation) ) { $actually_do_the_processing_here }
+
+# Assign argument name to a property from the piped in input
+function test{ param([Parameter(ValueFromPipelineByPropertyName=$true)] $DayOfWeek) process { $DayOfWeek }}
+Get-Date | test
+
+# For type checking and loading classes from a module, auto-load has its limitations
+# using -module <name>
+
+# It should be possible to load just a few functions or aliases from a module
+# and extract them into a custom object (this exact command doesn't work though)
+$module = Import-Module PsToolset -Alias parse -AsCustomObject
+
+# To debug module loading
+ipmo PSToolset -Verbose
+
+
+```
