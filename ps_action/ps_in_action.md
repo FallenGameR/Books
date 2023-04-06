@@ -293,6 +293,64 @@ Get-WinEvent -ListLog Microsoft-Windows-Powershell*
 $start = (Get-Date).AddDays(-2)
 $end = $start.AddDays(1)
 Get-WinEvent -FilterHashtable @{LogName='Application'; StartTime=$start; EndTime=$end}
+```
 
+## Chapter 15 - Debugging
 
+```ps1
+# Get command syntax without using man system
+gcm gcm -Syntax
+
+# Write to windows event log, PS5 only
+New-EventLog -LogName PsScript -Source Dunctoins
+Write-EventLog -Message 'Starting' -LogName PsScript -Source Scripts -EntryType Information -EventId 1001
+
+# Capture commands and output
+Start-Transcript -Path logs.txt -IncludeInvocationHeader
+
+# Interpreter tracing
+Set-PsDebug -Trace 1
+
+# Show invoked functions
+Set-PsDebug -Trace 2
+
+# Breakpoint tracing for conditionals in a loop
+$bp = Set-PsBreakpoint -Script file.ps1 -Line 4 -Action {
+  if( $psitem.HitCount -eq 10 ) {Write-Host "Debug statement here"}
+}
+
+# Breakpoint tracing for variable assignments
+$bp = Set-PsBreakPoint -Script file.ps1 -Variable sum -Mode Write -Action {
+  if( $sum -ge 10 ) {Write-Host "Variable Sum = $sum"}
+}
+
+# Debug job
+Debug-Job -id 3
+```
+
+## Chapter 16 - Files
+
+```ps1
+# Limit number of returned lines
+Get-Content -Path file.txt -Head 5 # or -Tail
+
+# Read file without line separation
+Get-Content file.txt -Raw
+
+# Faster xml loading, no record separation
+$x = [xml](Get-Content file.xml -ReadCount -1)
+
+# XPath search in xml
+# - '//book[@genre = "Novel"]'
+Select-Xml -Content $string -XPath '/bookstore/book[price < 10]' | % Node
+
+# XMl object conversion
+gps | ConvertTo-Xml
+
+# XML serialization
+gps | ConvertTo-Xml -As String -NoTypeInformation
+
+# Text parsing (!)
+# A sister function is ConvertFrom-StringData
+netstat -n | select -Skip 4 | ConvertFrom-String -PropertyNames Blank, Protocol, LocalAddress, ForeignAddress, State | ft -auto
 ```
