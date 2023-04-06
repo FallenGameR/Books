@@ -234,8 +234,65 @@ remote> Read-Host "input"
 # - TCP/IP - routing
 # - HTTPS/HTTP (basic auth) - auth and encryption
 # - SOAP - xml deserialization
-# - WS-MAN - implemented by WinRM
+# - WS-MAN - implemented by WinRM, starts host process, IIS can be used if many incoming connection are expected and it is expensive to create a process per user (this is a custom configuration scenario, no process isolation)
 # - MS-PSRP - interpretation by the PS itself
+Set-PsSessionConfiguration Microsoft.Powershell -ShowSecurityDescriptorUI
+
+# Remote commands to Hyper-V VMs, this bypasses network and firewalls, requires admin rights on both sides
+Get-VM
+$cred = Get-Credential -Credential VMName\Administrator
+Invoke-Command -VMName VMName -ScriptBlock {Get-Process} -Credential $cred # or use -VMGuid instead of name
+```
+
+## Chapter 13 - Scheduled Jobs
+
+```ps1
+# Register scheduled job
+Register-SheduledJob -Name DailyJob -ScriptBlock {Get-Process} -Trigger $daily -RunNow
+
+# List scheduled jobs, they use the following paths:
+# - Task Scheduler\Library\Microsoft\Windows\Powershell\ScheduledJobs - registrations
+# - $home\AppData\Local\Microsoft\Windows\Powershell\ScheduledJobs - last 32 outputs, controlled by -MaxResultCount
+Get-Job -Name DailyJob -Newest 2
+
+# Start job outside of schedule - this doesn't preserve output on disk
+Start-Job -DefinitionName DailyJob
+
+# Setup scheduled job options, can hide from Task Scheduler UI
+# for RunElevated you'll need to provide -Credential in Register- or Set-
+New-ScheduledJobOption
+```
+
+## Chapter 14 - Errors
+
+```ps1
+# Redirect errors to a specific variable
+ls -ErrorVariable errs
+
+# Don't capture errors at all, even in the specific variable
+ls -ErrorVariable errs -ErrorAction ignore
+
+# Scoped error action preference override
+& {
+  $ErrorActionPreference = 'Stop'
+  ls
+}
+
+# List event logs, PS5 only
+Get-EventLog -List
+
+# Read entry from log, PS5 only
+# Other useful switches are -Index, -InstanceId, -Newest, -MaximumSize
+Get-EventLog -LogName Application -Message '*Defender*' -After 'April 30/2022'
+
+# List event logs, works everywhere
+# IMPORTANT: can open classic *.evt files as well
+Get-WinEvent -ListLog Microsoft-Windows-Powershell*
+
+# Find event
+$start = (Get-Date).AddDays(-2)
+$end = $start.AddDays(1)
+Get-WinEvent -FilterHashtable @{LogName='Application'; StartTime=$start; EndTime=$end}
 
 
 ```
