@@ -182,4 +182,60 @@ Remove-Item -verbose variable:total
 Update-TypeData SumMethod.ps1xml
 (1,2,3,4,5).Sum()
 (@{a=1},@{b=2},@{c=3}).Sum()
+
+# Dynamic module compiled in memory
+$bin = Add-Type $csCode -PassThrough
+$bin.Assembly | Import-Module
+```
+
+## Chapter 11 - Remoting
+
+```ps1
+# Enable PS or PS core remoting
+Enable-Psremoting -Verbose -Confirm
+
+# Trust a computer you connect to, this list is automated for domains
+# You can specify * if you trust all destinations (at home closed network)
+# Successful HTTPS euthentication also makes computer trusted via a shared cert root
+Set-Item wsman:\localhost\client\TrustedHosts "alexko-remote"
+
+# Note about script blocks used in remoting
+# - they are compiled locally to capture syntax errors
+# - they are more hardened against injection attacks
+
+# Download file from remote
+Copy-Item -Path test.txt -FromSession $s
+
+# Upload file to remote
+Copy-Item -Path test.txt -Destination C:\temp -ToSession $s
+
+# Implicit remoting with a proxy dynamically created module
+Import-PsSession -Session $s -CommandName Get-Bios
+Get-Bios # called locally, but executed remotelly via Session $s
+
+# Find location of a module
+(gcm source).Module.Path
+
+# Save remote command as a module
+Export-PsSession -OutputModule bios -Session $s -Type function -CommandName Get-Bios -AllowClobber
+Import-Module bios
+Get-Bios # will start to create a session to the remote computer, but then it'll fail since command isn't there yet
+
+# One way copy of var into remote session
+Invoke-Command -Session $s -ScriptBlock {"myvar is $using:myvar"}
+
+# Stdio and stdout in remoting are not redirected properly for native code
+# For PS scripts themselves you'll need switch from [Console] API to:
+# NOTE: Returned objects are deserialized with DEPTH of 1 by default
+remote> Write-Host "hi"
+remote> Read-Host "input"
+
+# PS remoting stack
+# - TCP/IP - routing
+# - HTTPS/HTTP (basic auth) - auth and encryption
+# - SOAP - xml deserialization
+# - WS-MAN - implemented by WinRM
+# - MS-PSRP - interpretation by the PS itself
+
+
 ```
