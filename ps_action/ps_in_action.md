@@ -353,4 +353,66 @@ gps | ConvertTo-Xml -As String -NoTypeInformation
 # Text parsing (!)
 # A sister function is ConvertFrom-StringData
 netstat -n | select -Skip 4 | ConvertFrom-String -PropertyNames Blank, Protocol, LocalAddress, ForeignAddress, State | ft -auto
+
+# List available COM objects
+function Get-ProgId
+{
+    param( $filter = "." )
+
+    ls -path 'Registry::HKEY_CLASSES_ROOT\clsid\*\progid' |
+        foreach{ if( $_.Name -match '\\ProgId$' ) { $_.GetValue('') } } |
+        where{ $_ -match $filter }
+}
+Get-ProgId
+
+# Creating COM object. Interesting methods are:
+$shell = New-Object -ComObject Shell.Application
+$shell.WindowSwitcher()
+$shell.ToggleDesktop()
+
+# List CIM classes (WMI is the same but it is an older set of cmdlets)
+# Descriptions are http://mng.bz/43Da
+Get-CimClass *udp*
+
+# Get CIM instance, remoting is done via WS-MAN the same as for regular PS remoting
+Get-CimInstance Win32_PerfRawData_Tcpip_UDPv4 -ComputerName localhost
+```
+
+## Chapter 17 - Events
+
+```ps1
+# Script blocks as delegates of specific type
+[regex]::Replace('abcd', '.', [System.Text.RegularExpressions.MatchEvaluator] {
+  param($match)
+  '{0:x2}' -f [int] [char] $match.Value
+})
+
+# Register async events, PS can't use delegates directly here since it is single-threaded
+# Intead we are relying on a wrapper (eventing subsystem) that makes async events easier to work with from scripts
+# Interesting build-in variables for the handler: $event, $eventSubscriber, $sender, $sourceEventArgs, $sourceArgs
+Get-EventSubscriber | %{ Unregister-Event -SubscriptionId $_.SubscriptionId }
+$timer = New-Object -TypeName System.Timers.Timer -Property @{Interval = 3000; AutoReset = $true}
+Register-ObjectEvent -InputObject $timer -MessageData 5 -SourceIdentifier Stateful -EventName Elapsed -Action {
+  $script:counter += 1
+  Write-Host "Event counter is $counter"
+  if( $counter -ge $event.MessageData ) {
+    Write-Host 'Stopping counter'
+    $timer.Stop()
+  }
+}
+$timer.Start()
+
+# Some useful commands
+Wait-Event # block console until an event happens
+Get-Event | Remove-Event # Cleanup happened event, handle it
+
+# Get CIM tracing classes
+Get-CimClass Win32_*trace | select CimClassName, CimSuperClassName
+
+# Trace process starts, use admin console
+Register-CimIndicationEvent -ClassName Win32_ProcessStartTrace -Action {
+  'Process Start: ' + $event.SourceEventArgs.NewEvent.ProcessName | Out-Host
+}
+Get-EventSubscriber | Unregister-Event
+Get-Job | Remove-Job
 ```
