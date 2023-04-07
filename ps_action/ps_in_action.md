@@ -416,3 +416,75 @@ Register-CimIndicationEvent -ClassName Win32_ProcessStartTrace -Action {
 Get-EventSubscriber | Unregister-Event
 Get-Job | Remove-Job
 ```
+
+## Chapter 20 - Powershell API
+
+```ps1
+# Dynamically construct PS statement and execute it later on
+# Note that it will run in an isolated new runspace
+[PowerShell]::Create(). `
+  AddCommand("Get-Process"). `
+  AddParameter("Name", "*code*"). `
+  AddCommand("sort"). `
+  AddArgument("HandleCount"). `
+  AddParameter("Descending"). `
+  Invoke()
+
+# Handle error
+$p.HadErrors
+$p.Streams.Error.Count
+
+# Add script into execution
+[PowerShell]::Create().AddScript{ foreach($i in 1,2,3) {$i*$i} }.Invoke()
+
+# Reuse current runspace
+$x = 42
+[PowerShell]::Create("CurrentRunspace").AddScript{ $x = 43 }.Invoke()
+$x
+
+# Managing runspaces
+$rs = [RunspaceFactory]::CreateRunspace()
+$rs.Open()
+
+$p = [PowerShell]::Create()
+$p.Runspace = $rc
+$p.AddScript{ $x = 123 }.Invoke()
+$p.Commands.Clear()
+$p.AddScript{ $x }.Invoke()
+
+# Parrallel execution via runspaces
+$p = [Powershell]::Create().AddCommand("Start-Sleep").AddParameter("Seconds",3)
+$ia = $p.BeginInvoke()
+$p.EndInvoke($ia)
+$ia.IsCompleted
+
+# To control resource allocation use runspace pools
+$pool = [RunspaceFactory]::CreateRunspacePool(1,3)
+$pool.Open()
+$pool.GetAvailableRunspaces()
+$p.RunspacePool = $pool
+$p.Dispose()
+
+# Out of process runspaces that can be reused in this session
+# They don't outlive creating process though
+$ors = [RunspaceFactory]::CreateOutOfProcessRunspace($null)
+$ors.Open()
+$p = [Powershell]::Create().AddScript{"Child PID is $pid"}
+$p.Runspace = $ors
+$p.Invoke()
+
+# List opened runspaces and close all but the current one
+Get-RunSpace | ? RunspaceAvailability -ne "Busy" | % Close
+```
+
+## Chapter Bonus - PS Core
+
+```ps1
+# Special variables to designate OS
+$IsLinux
+$IsWindows
+$IsOsx
+
+# Remoting in PS Core is done via SSH
+$s = New-PsSession -HostName LinuxBox -UserName root
+```
