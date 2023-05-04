@@ -488,3 +488,15 @@ $IsOsx
 # Remoting in PS Core is done via SSH
 $s = New-PsSession -HostName LinuxBox -UserName root
 ```
+
+## Extras
+
+```ps1
+# Parse method replacement, regexes don't seem to be supported directly - this is experimental, ConvertFrom-StringData is more stable
+"test/me/hey" | ConvertFrom-String -Delimiter "/" -PropertyNames "A","B","C"
+"test,me,*1" | ConvertFrom-String -TemplateContent "{{FirstName:String},{LastName:String},*{Age:int}}"
+
+# Sample of regexes - inclear if that would really work
+"{{First Name:Regex(^[\w]*)},{Middle Name:Regex(^[\w]*)},{Last Name:Regex(^[\w]*)},{City of Birth:Regex(^[\w ]*)},{Age:int}}"
+"{{First Name:Regex(^[\w]*)}\s*,\s*{Middle Name:Regex(^[\w]*)}\s*,\s*{Last Name:Regex(^[\w]*)}\s*,\s*{City of Birth:Regex(^[\w ]*)}\s*,\s*{Age:int}}"
+```
