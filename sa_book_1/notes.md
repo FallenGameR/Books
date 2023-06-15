@@ -1,0 +1,25 @@
+# The Practice of System and Network Administration, Book 1
+
+- 30 min to make VGA work story
+- transparent org-wide updates
+- vendor lock (email app), no standart
+- network complexity - ISP+advanced load balancing vs corporate networking skills
+- separate section on visibility for SAs (who deal with infrastructure) - fixed problem like tree in the forest that fell, nobody notices it
+- Subnet vs VLAN
+- 3 secret layers of OSI model - user, financial, political
+- Cable interferance from a power cable
+- Keeping dust outside of datacenter - workbench with antistatic mats where unboxing happens
+- ICM handling (with Seinfield-esque names for people who systematically miss that particular step)
+  - Greeting (the grumpy)
+  - Problem classification - what team owns (the misdelegator)
+  - Problem statement - enough info to repro (the assumer)
+  - Problem verification - repro can be reproduced (the mislead one)
+  - Solution proposals - what are the hypotheses (the fixer of a wrong problem)
+  - Solution selection - arange by likeliness (the fixer of a wrong problem)
+  - Solution execution - apply the fix (the executioner on a wrong machine)
+  - Verification - did it work from your side? (the hit and run support)
+  - Customer verification - did it fix the problem from the customer side? (the hastly deal closer)
+- Architect positions - for people that have end-to-end understanding of their system and it's interactions with connected systems, invoked on major outages. Official role involves:
+  - predict needs and technologies in 2-5 years horizon
+  - start preparing for the new needs/tech - prototyping, getting involved with vendors, steering direction of vendor products
+  - steer people to more scalable solutions
