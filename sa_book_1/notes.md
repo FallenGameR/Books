@@ -23,3 +23,17 @@
   - predict needs and technologies in 2-5 years horizon
   - start preparing for the new needs/tech - prototyping, getting involved with vendors, steering direction of vendor products
   - steer people to more scalable solutions
+- A tiny team can communicate verbally. As the team grows, however, you must change from an oral tradition to a written tradition =)
+- Setup git repo in default linux folders:
+  - /etc - system app configs
+  - /usr/local - local app configs
+  - /home - personal files and configs
+  - /var - some service specific change logs subdirectory
+- Upgrade announcement:
+  - Use blank templates, don't update the previous announcement
+  - Title - brief (what & when) - enough to decide if read through is needed
+  - Who is affected
+  - What will happen
+  - When
+  - Why with link to more information
+  - I object! with link how to postpone
