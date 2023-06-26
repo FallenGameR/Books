@@ -1,5 +1,7 @@
 # The Practice of System and Network Administration, Book 1
 
+## Notes
+
 - 30 min to make VGA work story
 - transparent org-wide updates
 - vendor lock (email app), no standart
@@ -37,3 +39,9 @@
   - When
   - Why with link to more information
   - I object! with link how to postpone
+
+## Ideas
+
+- Monitoring areas: availability, performance, problems, capacity planing
+- The difference between problem and crisis is preparation
+- Upgrade-related interruptions are less annoying when customers understand what is going on, have some control over the schedule and know what they are going to get out of it ultimatelly
