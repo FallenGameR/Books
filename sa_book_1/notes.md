@@ -11,16 +11,6 @@
 - 3 secret layers of OSI model - user, financial, political
 - Cable interferance from a power cable
 - Keeping dust outside of datacenter - workbench with antistatic mats where unboxing happens
-- ICM handling (with Seinfield-esque names for people who systematically miss that particular step)
-  - Greeting (the grumpy)
-  - Problem classification - what team owns (the misdelegator)
-  - Problem statement - enough info to repro (the assumer)
-  - Problem verification - repro can be reproduced (the mislead one)
-  - Solution proposals - what are the hypotheses (the fixer of a wrong problem)
-  - Solution selection - arange by likeliness (the fixer of a wrong problem)
-  - Solution execution - apply the fix (the executioner on a wrong machine)
-  - Verification - did it work from your side? (the hit and run support)
-  - Customer verification - did it fix the problem from the customer side? (the hastly deal closer)
 - Architect positions - for people that have end-to-end understanding of their system and it's interactions with connected systems, invoked on major outages. Official role involves:
   - predict needs and technologies in 2-5 years horizon
   - start preparing for the new needs/tech - prototyping, getting involved with vendors, steering direction of vendor products
@@ -45,3 +35,33 @@
 - Monitoring areas: availability, performance, problems, capacity planing
 - The difference between problem and crisis is preparation
 - Upgrade-related interruptions are less annoying when customers understand what is going on, have some control over the schedule and know what they are going to get out of it ultimatelly
+
+## ICM handling
+
+With Seinfield-esque names for people who systematically miss that particular step.
+
+- Greeting (the grumpy)
+- Problem classification - what team owns (the misdelegator)
+- Problem statement - enough info to repro (the assumer)
+- Problem verification - repro can be reproduced (the mislead one)
+- Solution proposals - what are the hypotheses (the fixer of a wrong problem)
+- Solution selection - arange by likeliness (the fixer of a wrong problem)
+- Solution execution - apply the fix (the executioner on a wrong machine)
+- Verification - did it work from your side? (the hit and run support)
+- Customer verification - did it fix the problem from the customer side? (the hastly deal closer)
+
+## Postmortem handling
+
+After the event when it is sufficiently quiet gather flight director and senior SAs to sit down and talk:
+
+- what went right, and why
+- what went wrong, and why
+- which improvements and optimizations can be made
+
+Gather notes and discuss with the whole group later in the week.
+
+Common mistakes:
+
+- trying to do too much in the alloted time
+- not doing anough work ahead of time
+- underestimating how long something will take
