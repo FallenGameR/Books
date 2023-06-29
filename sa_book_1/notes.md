@@ -29,6 +29,7 @@
   - When
   - Why with link to more information
   - I object! with link how to postpone
+- CAP theorem: consistentcy, availability, partition_tolerance - pick two. In case of a networking partiion a distributed system can either be consistent or available, but not both of them together.
 
 ## Ideas
 
@@ -65,3 +66,19 @@ Common mistakes:
 - trying to do too much in the alloted time
 - not doing anough work ahead of time
 - underestimating how long something will take
+
+## Centralization vs decentralization
+
+> Centralization
+
+- Efficiency since there is no duplication of effort
+- Improved quality of the service, dedicated experts
+- Automation that leads to more reliable service and faster turnaround times
+- Systems are designed to be remotelly managed from the start
+
+> Decentralization
+
+- Historic org division (company merges, big companies)
+- Low quality of the centralized service
+- Lack of customization of the centralized solution, new features are not landed in time
+- Some way of reducing the cost (or likelly hide it elsewhere)
