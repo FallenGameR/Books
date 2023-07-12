@@ -30,6 +30,16 @@
   - Why with link to more information
   - I object! with link how to postpone
 - CAP theorem: consistentcy, availability, partition_tolerance - pick two. In case of a networking partiion a distributed system can either be consistent or available, but not both of them together.
+- Personal integrity (ethics)
+  - I will be honest in my professional dealings and forthcomming about my competence and the impact of my mistakes. I will seak assistance from others when required.
+  - I will avoid conflicts of intereset and biases whenever possible. When my advice is thought, it I have a conflict of interest or bias, I will declare it if appropriate, and recuse myself if necessary.
+- The consequences of making a mistake should be specified. The best policy is to state that there will be no punishment for making an honest mistake as long as it is reported quickly and completelly. The sooner a mistake is reported, the sooner it can be fixed and the less domino-effect damage that will occur.
+- Be firm with people who are harming (your company). If they turn into bullies, it's better to find a bigger bully to fight for you.
+- Controlling costs explanation to management. The SA group doesn't control the cost of it's budget during scaling out if it pays for support of other teams' people and other teams' equipment that keeps grows. Scalable way is to make other groups financially reponsible for the support of themselves.
+  - Who pays?
+  - How does it scale?
+  - What do cusomers get for their money?
+- When things in an organization are not doing well, hire reform-orineted people. Highly skilled people with expirience at well-run sites are more likelly to be reformers. On the other hand if things go well hire hunior people, reward best workers, retain institutional knowlege.
 
 ## Ideas
 
