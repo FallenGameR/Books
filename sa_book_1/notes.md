@@ -40,12 +40,15 @@
   - How does it scale?
   - What do cusomers get for their money?
 - When things in an organization are not doing well, hire reform-orineted people. Highly skilled people with expirience at well-run sites are more likelly to be reformers. On the other hand if things go well hire hunior people, reward best workers, retain institutional knowlege.
+- Customers don't like faceless organizations, it is easier to get angry at a person whom you have never met.
+- "Thank you for reporting this. It helped us fix the problem and find ways to prevent it in the future."
 
 ## Ideas
 
 - Monitoring areas: availability, performance, problems, capacity planing
 - The difference between problem and crisis is preparation
 - Upgrade-related interruptions are less annoying when customers understand what is going on, have some control over the schedule and know what they are going to get out of it ultimatelly
+- Address every problem as a puzzle, one that is a fun challendge to solve.
 
 ## ICM handling
 
