@@ -106,4 +106,12 @@ Common mistakes:
 - I statements - "I feel {soft_emotion} when you {action}"
   - hard emotions like anger makes people defensive and they would not hear you out
   - soft emotions: hurt, unvalued, very happy, frustrated, disappointed, untrusted
+- Mirroring - "I hear you are saying that..." - like CRC checks on file transfer
+  - "Say again?" - an ask to repeat the said words
+- Reflection (Validation) - "Wow! You are really upset about this."
+  - the secret of dealing with angry people
+  - do something to acknowledge their emotions - this will calm them down
+  - you must deal with their emotions before you can deal with their complaints
+  - most of the frustration comes from the feeling that he/she is not being heard
+  - it would tell how he/she looks which can embaras slightly and then regain composure
 
