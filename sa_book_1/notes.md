@@ -54,6 +54,7 @@
 - Upgrade-related interruptions are less annoying when customers understand what is going on, have some control over the schedule and know what they are going to get out of it ultimatelly
 - Address every problem as a puzzle, one that is a fun challendge to solve.
 - Read emails once - if you open it, reply. If you would not have time to process it, don't open.
+- Manager should be concerned with steering the boat, not rowing it.
 
 ## ICM handling
 
@@ -114,4 +115,12 @@ Common mistakes:
   - you must deal with their emotions before you can deal with their complaints
   - most of the frustration comes from the feeling that he/she is not being heard
   - it would tell how he/she looks which can embaras slightly and then regain composure
-
+- Negotiation - "Is that negotiable?"
+- Accept compliments - "Thank you"
+  - If someone is being polite enough to compliment you, be polite enough to accept the darn compliment!
+- Ask for promotion explicitly - "I want you to know that I want to be one of the student managers here, and I'll do what it takes to get there".
+  - Manager can structure your tasks and training in the right direction.
+  - Manager like that you are seeking their wisdom.
+  - Don't bring complaints (selfish requests), bring an interesting problem to solve. Align with boss'es goals.
+- It is difficult for a manager to turn down a reasonable request made immediatelly after having complimented you on a job well done or thanking you for saving the compnay money.
+  
