@@ -42,6 +42,10 @@
 - When things in an organization are not doing well, hire reform-orineted people. Highly skilled people with expirience at well-run sites are more likelly to be reformers. On the other hand if things go well hire hunior people, reward best workers, retain institutional knowlege.
 - Customers don't like faceless organizations, it is easier to get angry at a person whom you have never met.
 - "Thank you for reporting this. It helped us fix the problem and find ways to prevent it in the future."
+- "Let's hear from the people in the room who have not spoken yet" (if somebody talkative takes all the initiative). In extreme cases go round the room asking each individually.
+- Add who needs to read this to mass communication emails (or who can stop reading because this is not relevant).
+- Free lunch lotery based on the ticket number (every 1000th).
+- You are spending so much time mopping the floor that you don't have time to fix the leak.
 
 ## Ideas
 
@@ -49,6 +53,7 @@
 - The difference between problem and crisis is preparation
 - Upgrade-related interruptions are less annoying when customers understand what is going on, have some control over the schedule and know what they are going to get out of it ultimatelly
 - Address every problem as a puzzle, one that is a fun challendge to solve.
+- Read emails once - if you open it, reply. If you would not have time to process it, don't open.
 
 ## ICM handling
 
@@ -95,3 +100,10 @@ Common mistakes:
 - Low quality of the centralized service
 - Lack of customization of the centralized solution, new features are not landed in time
 - Some way of reducing the cost (or likelly hide it elsewhere)
+
+## Communication
+
+- I statements - "I feel {soft_emotion} when you {action}"
+  - hard emotions like anger makes people defensive and they would not hear you out
+  - soft emotions: hurt, unvalued, very happy, frustrated, disappointed, untrusted
+
