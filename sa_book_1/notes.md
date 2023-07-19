@@ -46,6 +46,7 @@
 - Add who needs to read this to mass communication emails (or who can stop reading because this is not relevant).
 - Free lunch lotery based on the ticket number (every 1000th).
 - You are spending so much time mopping the floor that you don't have time to fix the leak.
+- Three Different Backgrounds - a design had 1) to have enough structure to satisfy a religios-background person, 2) each component had to be self-reliant to satisfy a orphan-background person, 3) system had to be able to deal with change well enough to satisfy the nomad-background person.
 
 ## Ideas
 
@@ -124,3 +125,16 @@ Common mistakes:
   - Don't bring complaints (selfish requests), bring an interesting problem to solve. Align with boss'es goals.
 - It is difficult for a manager to turn down a reasonable request made immediatelly after having complimented you on a job well done or thanking you for saving the compnay money.
   
+## Hiring
+
+- Job description writes itself
+  - Document stuff you dislike doing
+  - That makes the list of tasks you want to delegate documented - that would be the responsibilities
+  - The skills required to perform those tasks is the list of the skills that a person should have
+- An interview candidate should have the impression that interviewiving them, was the most important thing on the interviewers' minds this day. Candidate need to leave the building with their self-respect intact and liking the company.
+- Don't prolong the agony - when you find the candidate's limits in one area, back off and try to find their limits in another area. Give the candidate a change to build up confidence before probing their limits.
+- Ask deeper and deeper questions untill candidate says "I don't know" to find out the limit of their knowledge. Explain that that's fine, so that candidate would not loose self confidence and you would be able to test limits of their knowledge and would be probably surprised that that "limit" is just fine.
+- Interest in computers, two extremes:
+  - Computers are focus of life. May work long hours but that is not healthy, will likelly result in burn-out and this is not a recipe for a long-term success. If the candidate plays with a new technology it can be difficult for them to figure out how much real work is was done and how much was just playing around.
+  - Compute-averse, would not use computers ouside of work. Sustainable lifestyle, will not burn-out (probably they already had that expirience). More likelly to be more productive in all the hours they do the work. Less likelly to try out and adopt a new technology or suggest introducing it.
+
