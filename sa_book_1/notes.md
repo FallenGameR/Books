@@ -137,4 +137,8 @@ Common mistakes:
 - Interest in computers, two extremes:
   - Computers are focus of life. May work long hours but that is not healthy, will likelly result in burn-out and this is not a recipe for a long-term success. If the candidate plays with a new technology it can be difficult for them to figure out how much real work is was done and how much was just playing around.
   - Compute-averse, would not use computers ouside of work. Sustainable lifestyle, will not burn-out (probably they already had that expirience). More likelly to be more productive in all the hours they do the work. Less likelly to try out and adopt a new technology or suggest introducing it.
-
+- Retention - keep the job interesting, enjoyable.
+  - If there is a tedious, repetitive task, get someone to automate those tasks. The person who is creating the automation will enjoy it, the SAs who no longer have to do the repetitive task will appreciate it, and efficiency will be improved.
+  - People work for money. People work hard for appreciation. People work the hardest when they love what they do. People work the best when they love what they do, where they do it, and who they do it for.
+  - People take jobs because of money, but people leave jobs because of bad managers.
+  
