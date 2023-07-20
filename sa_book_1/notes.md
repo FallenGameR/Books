@@ -47,6 +47,8 @@
 - Free lunch lotery based on the ticket number (every 1000th).
 - You are spending so much time mopping the floor that you don't have time to fix the leak.
 - Three Different Backgrounds - a design had 1) to have enough structure to satisfy a religios-background person, 2) each component had to be self-reliant to satisfy a orphan-background person, 3) system had to be able to deal with change well enough to satisfy the nomad-background person.
+- "It hurts when I do 'this'". Don't do 'that'. If it unavoidable try to automate.
+- Praise in public, critisize in private.
 
 ## Ideas
 
