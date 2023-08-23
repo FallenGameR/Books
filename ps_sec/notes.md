@@ -31,3 +31,7 @@ $params = @{
 Update-TypeData @params
 $myObject.UpperCaseName
 ```
+
+## Powershell remoting
+
+- [Remoting setup and troubleshooting guide](https://github.com/devops-collective-inc/secrets-of-powershell-remoting/blob/master/SUMMARY.md)
