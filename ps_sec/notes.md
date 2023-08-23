@@ -30,6 +30,9 @@ $params = @{
 }
 Update-TypeData @params
 $myObject.UpperCaseName
+
+# Validate that object is of that custom type
+# param( [PSTypeName('My.Object')] $Data )
 ```
 
 ## Powershell remoting
