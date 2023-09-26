@@ -38,3 +38,21 @@ $myObject.UpperCaseName
 ## Powershell remoting
 
 - [Remoting setup and troubleshooting guide](https://github.com/devops-collective-inc/secrets-of-powershell-remoting/blob/master/SUMMARY.md)
+
+## Event log
+
+App\Powershell-Core\Operational and App\Windows PowerShell - log every command
+
+## Certificates
+
+- Execution policy that can by bypass at any time is not a security boundary (regarding Set-ExecutionPolicy).
+- Scripts signed by a trusted authority (publisher) are automatically trusted and executed without interruptions (regarding signing).
+- [Azure DevOps pipelines](https://learn.microsoft.com/en-us/azure/devops/pipelines/architectures/devops-pipelines-baseline-architecture?view=azure-devops) - can be used to automatically sign your code and perform various tests on different deployment stages
+
+```ps1
+# Create certificate
+New-SelfSignedCertificate
+
+# Sign with a certificate
+Set-AuthenticodeSignature
+```
