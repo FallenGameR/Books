@@ -10,3 +10,7 @@
 1. Download dbghelp.dll from `https://developer.microsoft.com/en-us/windows/downloads/windows-sdk/` debugging tools.
 2. Setup symbol path to `c:\symbols\private;srv*c:\symbols\public*https://msdl.microsoft.com/download/symbols` in _NT_SYMBOL_PATH
 
+## Procexp tips & tricks
+
+- Space to pause refresh, F5 for manual refresh to see the process diff (new and killed processes, possible delta columns)
+- Ctrl-c on row to copy in TSV format
