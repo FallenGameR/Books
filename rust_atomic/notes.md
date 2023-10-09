@@ -7,3 +7,5 @@
 // Comparing to static that means that we can create the allocation in runtime
 let x: &'static [i32; 3] = Box::leak(Box::new([1,2,3]));
 ```
+
+- `Copy` means that when you move them, the original still exists. Similar to integers and boolean.
