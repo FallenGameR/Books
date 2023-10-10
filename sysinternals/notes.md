@@ -24,3 +24,6 @@
   - `Suspend` - keep proces in memory but don't run it, useful for malware that monitors that it's service is in memory and keeps restarting it in case it's killed
   - `Debug` - launches `HKLM\Software\Microsoft\Windows NT\CurrentVersion\AeDebug -p <PID>`. Terminating debugger without detaching kills the debugged process.
   - `Create dump` - creates full or minidump without terminating a process
+- Process columns:
+  - `Image/Autostart location` - what causes process to auto-start
+  
