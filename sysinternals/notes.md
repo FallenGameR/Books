@@ -26,4 +26,11 @@
   - `Create dump` - creates full or minidump without terminating a process
 - Process columns:
   - `Image/Autostart location` - what causes process to auto-start
-  
+  - `Comment` - persists between procexp runs, one for a unuque image path
+
+## Procmon
+
+- `BUFFER OVERFLOW` is not an error result, this is how usually WinAPI is used to find out needed buffer length
+- Filter rules regarding the same column are joinsed with OR, filter rules about different columns are joined with AND
+- `-is` operation allows to select value from the combobox (no need to do string matches with `contains`), but doesn't work on the `Path` column
+- It is possible to set `Category is Write` for all the events that modify the file system
