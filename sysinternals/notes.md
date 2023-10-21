@@ -34,3 +34,7 @@
 - Filter rules regarding the same column are joinsed with OR, filter rules about different columns are joined with AND
 - `-is` operation allows to select value from the combobox (no need to do string matches with `contains`), but doesn't work on the `Path` column
 - It is possible to set `Category is Write` for all the events that modify the file system
+- Highlight rules `Ctrl-H` work the same way as the filter rules with regard to AND and OR (can be not intuitive)
+- `F4` and `Shift-F4` for quick navigation between highlighted items, also an event properties have navigation buttons
+- `F6` and `Shift-F6` for quick navigation between bookmarked items, `Ctrl-B` to toggle a bookmark
+
