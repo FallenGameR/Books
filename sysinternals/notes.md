@@ -38,3 +38,9 @@
 - `F4` and `Shift-F4` for quick navigation between highlighted items, also an event properties have navigation buttons
 - `F6` and `Shift-F6` for quick navigation between bookmarked items, `Ctrl-B` to toggle a bookmark
 
+### Injecting custom debug traces from your program into Procmon
+
+- Enable profiling events toggle
+- Use native or manged API from https://github.com/Wintellect/ProcMonDebugOutput (that's just a wrapper, if you want you can just directly emmit ETW messages in the corresponding log)
+- Optionally use `Exclude events before` and `Exclude events after` to remove unnecessary events that happen outside of your debug windows
+- The same machanism is used in the `ProcDump` tool, btw
