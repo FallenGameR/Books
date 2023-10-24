@@ -44,3 +44,14 @@
 - Use native or manged API from https://github.com/Wintellect/ProcMonDebugOutput (that's just a wrapper, if you want you can just directly emmit ETW messages in the corresponding log)
 - Optionally use `Exclude events before` and `Exclude events after` to remove unnecessary events that happen outside of your debug windows
 - The same machanism is used in the `ProcDump` tool, btw
+
+## ProcDump
+
+Creates mini or full process dump on a condition.
+
+- `PID` would create minidump in the current folder
+- `-w partial_process_name` would poll every second for the process to be created and then would create a minudump (it would not be able to capture the initial second of the process lifetime)
+- `-e 1 -f "" -x c:\dumps pwsh.exe -File Script.ps1` would start the process and attach the debugger to it
+  - To debug a process whenever it is executed create subkey `HKLM\Software\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\Process.exe`. In that subkey create string value `Debugger` and place all the parameters except the last two - executable name and arguments, since they would be supplied automatically.
+  - Instead of executable name you can specify UWP package name as can be resolved via `HKCU\Software\Classes\ActivatableClasses\Package` and optionally add `!AppName` to it.
+- `-i` in the current folder would attach procdump as the AutoEnabled debugger making it trigger for every un-captured exception. `-u` to unregister.
