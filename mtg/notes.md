@@ -19,4 +19,6 @@ They need to be stored somewhere, right? =)
 - Grave Secrets - very complicated, -
 - Graveyard Bash - ok, not very fun black deck, +
 - Growing Hope - complicated, but interesting, fun, +
-
+- High Flying Valor - playable, not not very interesting, +
+- House Demir - fun, +
+- Keep the Peace - strong health deck, but not very fun to play with, +
