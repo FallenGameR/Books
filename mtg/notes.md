@@ -2,23 +2,44 @@
 
 They need to be stored somewhere, right? =)
 
-## Decks
+## Don't use
 
 - Dragon Fire - so so, -
 - Cult of Racdos - clowns, -
-- Azourius Senate - ok, +
-- Arcene Agression - lots of legendaries, +
 - Aerial Dominion - slow, -
+- Grave Secrets - very complicated, -
+- Large in Charge - slow and unpredictable, -
+
+## Not very interesting
+
+- Azourius Senate - ok?, +
 - Arcane Inventions - ok, but not fun, +
-- Chandra, Flame's Catalys - ok
+- Chandra, Flame's Catalys - ok, +
+- Goblins Everywhere - depends on red bombardment enchantment card, +
+- Graveyard Bash - ok, not very fun black deck, +
+- High Flying Valor - playable, not not very interesting, +
+
+## Not very interesting, but strong
+
+- Keep the Peace - strong health deck, but not very fun to play with, +
+- Rebel Armory - strong, artifacts, but complicated and not so fun, +
+
+## Interesting
+
+- Arcene Agression - lots of legendaries, +
 - Charging Ahead - ok, fun, dinosaurs, +
 - Cold Blooded Killers - ok, fun, vampires, +
 - Eternal Thirst - ok, fun, vampire & angels, +
 - Forest Might - interesting, ok +
-- Goblins Everywhere - depends on red bombardment enchantment card, +
-- Grave Secrets - very complicated, -
-- Graveyard Bash - ok, not very fun black deck, +
 - Growing Hope - complicated, but interesting, fun, +
-- High Flying Valor - playable, not not very interesting, +
 - House Demir - fun, +
-- Keep the Peace - strong health deck, but not very fun to play with, +
+- Legions of pyrexis - fun, +
+
+## Unchecked
+
+- Savege Scavengers -
+- Scrapyard Sacrifice -
+- Selesnya Conclave -
+- Wilvian Wisdom -
+- Tactical Assult -
+
