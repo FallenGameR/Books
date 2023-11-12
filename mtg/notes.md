@@ -30,12 +30,12 @@ They need to be stored somewhere, right? =)
 
 ## Interesting
 
-- Arcene Agression - lots of legendaries, +
-- Charging Ahead - ok, fun, dinosaurs, +
-- Cold Blooded Killers - ok, fun, vampires, +
-- Eternal Thirst - ok, fun, vampire & angels, +
-- Forest Might - interesting, ok +
-- Growing Hope - complicated, but interesting, fun, +
-- House Demir - fun, +
-- Legions of pyrexis - fun, +
-- Savege Scavengers - very fun, quite complex, +
+- Arcene Agression (BR) - lots of legendaries, +
+- Charging Ahead (GR) - ok, fun, dinosaurs, +
+- Cold Blooded Killers (K) - ok, fun, vampires, +
+- Eternal Thirst (WK)- ok, fun, vampire & angels, +
+- Forest Might (G) - interesting, ok +
+- Growing Hope (GW) - complicated, but interesting, fun, +
+- House Demir (BK) - fun, +
+- Legions of pyrexis (WK) - fun, +
+- Savege Scavengers (RK) - very fun, quite complex, +
