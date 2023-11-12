@@ -9,6 +9,8 @@ They need to be stored somewhere, right? =)
 - Aerial Dominion - slow, -
 - Grave Secrets - very complicated, -
 - Large in Charge - slow and unpredictable, -
+- Silvian Wisdom - not fun, -
+- Tactical Assult - not enough mana, -
 
 ## Not very interesting
 
@@ -18,11 +20,13 @@ They need to be stored somewhere, right? =)
 - Goblins Everywhere - depends on red bombardment enchantment card, +
 - Graveyard Bash - ok, not very fun black deck, +
 - High Flying Valor - playable, not not very interesting, +
+- Scrapyard Sacrifice - not fun, +
 
 ## Not very interesting, but strong
 
 - Keep the Peace - strong health deck, but not very fun to play with, +
 - Rebel Armory - strong, artifacts, but complicated and not so fun, +
+- Selesnya Conclave - can be strong, but depends on cards, +
 
 ## Interesting
 
@@ -34,12 +38,4 @@ They need to be stored somewhere, right? =)
 - Growing Hope - complicated, but interesting, fun, +
 - House Demir - fun, +
 - Legions of pyrexis - fun, +
-
-## Unchecked
-
-- Savege Scavengers -
-- Scrapyard Sacrifice -
-- Selesnya Conclave -
-- Wilvian Wisdom -
-- Tactical Assult -
-
+- Savege Scavengers - very fun, quite complex, +
