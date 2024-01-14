@@ -55,3 +55,23 @@ Creates mini or full process dump on a condition.
   - To debug a process whenever it is executed create subkey `HKLM\Software\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\Process.exe`. In that subkey create string value `Debugger` and place all the parameters except the last two - executable name and arguments, since they would be supplied automatically.
   - Instead of executable name you can specify UWP package name as can be resolved via `HKCU\Software\Classes\ActivatableClasses\Package` and optionally add `!AppName` to it.
 - `-i` in the current folder would attach procdump as the AutoEnabled debugger making it trigger for every un-captured exception. `-u` to unregister.
+
+## PsGetSid
+
+```ps1
+# Get SID of the current machine
+psgetsid -nobanner
+
+# Get SID of local administrator that would contain the SID of the local machine
+psgetsid -nobanner administrator
+
+# Works only in Active Directory, since there is no Service Operators group on a workstation
+psgetsid -nobanner $Env:LOGONSERVER S-1-5-32-549
+
+# List known SIDs for standart groups
+0x220..0x240 | %{ psgetsid -nobanner S-1-5-32-$psitem 2>$null }
+
+# Names of first 10 local users and groups
+$machine = (psgetsid -nobanner $Env:LOGONSERVER)[2]
+1000..1009 | %{ psgetsid -nobanner $machine-$psitem 2>$null }
+```
