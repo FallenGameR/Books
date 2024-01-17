@@ -75,3 +75,87 @@ psgetsid -nobanner $Env:LOGONSERVER S-1-5-32-549
 $machine = (psgetsid -nobanner $Env:LOGONSERVER)[2]
 1000..1009 | %{ psgetsid -nobanner $machine-$psitem 2>$null }
 ```
+
+## PsService
+
+```ps1
+# List w32time service settings
+» psservice config w32time
+
+PsService v2.26 - Service information and configuration utility
+Copyright (C) 2001-2023 Mark Russinovich
+Sysinternals - www.sysinternals.com
+
+SERVICE_NAME: W32Time
+DISPLAY_NAME: Windows Time
+Maintains date and time synchronization on all clients and servers in the network. If this service is stopped, date and time synchronization will be unavailable. If this service is disabled, any services that explicitly depend on it will fail to start.
+        TYPE              : 20 WIN32_SHARE_PROCESS
+        START_TYPE        : 3  DEMAND_START
+        ERROR_CONTROL     : 1  NORMAL
+        BINARY_PATH_NAME  : C:\WINDOWS\system32\svchost.exe -k LocalService
+        LOAD_ORDER_GROUP  :
+        TAG               : 0
+        DEPENDENCIES      :
+        SERVICE_START_NAME: NT AUTHORITY\LocalService
+        FAIL_RESET_PERIOD : 86400 seconds
+        FAILURE_ACTIONS   : Restart     DELAY: 60000 seconds
+                          : Restart     DELAY: 120000 seconds
+                          : None        DELAY: 0 seconds
+
+# Who is allowed to do what with a service
+psservice security w32time
+
+PsService v2.26 - Service information and configuration utility
+Copyright (C) 2001-2023 Mark Russinovich
+Sysinternals - www.sysinternals.com
+
+SERVICE_NAME: W32Time
+DISPLAY_NAME: Windows Time
+        ACCOUNT: NT AUTHORITY\LocalService
+        SECURITY:
+        [ALLOW] NT AUTHORITY\SYSTEM
+                Query status
+                Query Config
+                Interrogate
+                Enumerate Dependents
+                Pause/Resume
+                Start
+                Stop
+                User-Defined Control
+                Read Permissions
+        [ALLOW] BUILTIN\Administrators
+                All
+        [ALLOW] NT AUTHORITY\INTERACTIVE
+                Query status
+                Query Config
+                Interrogate
+                Enumerate Dependents
+                User-Defined Control
+                Read Permissions
+        [ALLOW] NT AUTHORITY\SERVICE
+                Query status
+                Query Config
+                Interrogate
+                Enumerate Dependents
+                User-Defined Control
+                Read Permissions
+        [ALLOW] NT AUTHORITY\LOCAL SERVICE
+                Query status
+                Query Config
+                Interrogate
+                Enumerate Dependents
+                Start
+                User-Defined Control
+                Read Permissions
+        [ALLOW] NT AUTHORITY\LOCAL SERVICE
+                Query Config
+                Interrogate
+                Enumerate Dependents
+                Stop
+                Read Permissions
+        [ALLOW] NT SERVICE\autotimesvc
+                All
+
+# Find dns servers in the current workgroup                
+» psservice find "dns server"
+```
