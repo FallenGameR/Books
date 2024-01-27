@@ -159,3 +159,13 @@ DISPLAY_NAME: Windows Time
 # Find dns servers in the current workgroup                
 » psservice find "dns server"
 ```
+
+## VmMap
+
+- tracing feature injects dll into a process to trace all allocations
+- graphs show relative region sizes, they don't show fragmentation and memory positions
+- can capture memory snaphots for diff - periodic, pausable with ctrl+space, manual with F5
+
+## DebugView
+
+- can start agent on one machine and view debug output on another one
