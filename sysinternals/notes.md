@@ -169,3 +169,16 @@ DISPLAY_NAME: Windows Time
 ## DebugView
 
 - can start agent on one machine and view debug output on another one
+
+## SigCheck
+
+```ps1
+# Show embedded app manifest
+sigcheck -m c:\tools\xts\xts.exe -nobanner
+
+# List cat file contents
+sigcheck -d c:\tools\DriScripts\DriScripts.cat -nobanner
+
+# List cert store contents -t (machine) -tu (user)
+sigcheck -tu -nobanner
+```
