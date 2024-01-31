@@ -182,3 +182,30 @@ sigcheck -d c:\tools\DriScripts\DriScripts.cat -nobanner
 # List cert store contents -t (machine) -tu (user)
 sigcheck -tu -nobanner
 ```
+
+## AccessChk
+
+```ps1
+# Check who has what access for a file or folder contents
+accesschk c:\windows\explorer.exe -nobanner
+
+# Check who has what access for a folder itself
+accesschk -d c:\windows\ -nobanner
+accesschk -d \\reddog\builds\branches\git_azure_compute_move_master_latest\ -nobanner
+
+# Check access rights for a local network share and list all the shares
+accesschk -h share -nobanner
+accesschk -h * -nobanner
+
+# Check access rights for a local windows service
+accesschk -c w32time -nobanner
+
+# Check recuresivelly current folder checking that current user has read access for all elements
+accesschk -rs $env:USERNAME .
+
+# Check recuresivelly program files showing what folders prohibit current user of anything
+accesschk -ns $env:USERNAME 'C:\Program Files\'
+
+# Looks like -o option may use usefil for resolving the user name in domain scenarios
+# And -i option for looking up where inheritance rules are broken and access is set explicitly
+```
