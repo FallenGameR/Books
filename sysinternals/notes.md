@@ -169,3 +169,32 @@ DISPLAY_NAME: Windows Time
 ## DebugView
 
 - can start agent on one machine and view debug output on another one
+
+## LiveKd
+
+- can debug kernel of a system that was not booted in debug mode
+- can debug guest Hyper-V VMs from the host
+- without -m/-ml debugger works in eventually consistent mode and can work with scarse resources
+- with -m/-ml dump is consistent, it represents point-in-time view of the system
+
+## ListDLLs
+
+- can find a loaded dll and tell if:
+  - it was not signed (not original)
+  - it was relocated from the original load address (injction)
+- doesn't list resource dlls (they are loaded as data), process explorer does
+
+```ps1
+# What processes loaded crypt32.dll
+listdlls -d crypt32
+
+# List dlls loaded from that folder
+listdlls -d "program files"
+```
+
+## SDelete
+
+```ps1
+# Erase free zpace on a drive replacing it with random data, 2 passes
+sdelete -p 2 -c j:
+```
