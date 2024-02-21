@@ -238,3 +238,30 @@ listdlls -d "program files"
 # Erase free zpace on a drive replacing it with random data, 2 passes
 sdelete -p 2 -c j:
 ```
+
+## PsPing
+
+```ps1
+# Start server on the specified address and port, create temporal firewall rules
+# For a permanent servers it's best to create a permanent rule
+# If client is terminated midstream the server no longer replies
+# So it makes sense to periodically restart server (if it senses that a 
+# port is already being used it just exists)
+psping -f -s 0.0.0.0:5201
+
+# Delay test - TCP establish-drop connection
+psping -nobanner -i 0 pspingserver:5201 
+
+# Speed test - TCP upload 1MB, 1 warmup attempt instead of 5 default
+psping -nobanner -w 1 -l 1m pspingserver:5201  
+
+# Speed test - TCP download 1MB, 1 warmup attempt instead of 5 default
+psping -nobanner -r -w 1 -l 1m pspingserver:5201  
+
+# Speed test - UDP upload 10KB (the max possible is a bit less than 64KB)
+# UDP download and warmup parameters don't really work for some reason
+psping -nobanner -u -l 10k pspingserver:5201  
+
+# Bandwidth test - TCP test works, UDP doesn't
+psping -nobanner -b -l 100k pspingserver:5201  
+```
