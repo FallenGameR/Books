@@ -250,18 +250,18 @@ sdelete -p 2 -c j:
 psping -f -s 0.0.0.0:5201
 
 # Delay test - TCP establish-drop connection
-psping -nobanner -i 0 pspingserver:5201 
+psping -i 0 pspingserver:5201 -nobanner
 
 # Speed test - TCP upload 1MB, 1 warmup attempt instead of 5 default
-psping -nobanner -w 1 -l 1m pspingserver:5201  
+psping -w 1 -l 1m pspingserver:5201 -nobanner
 
 # Speed test - TCP download 1MB, 1 warmup attempt instead of 5 default
-psping -nobanner -r -w 1 -l 1m pspingserver:5201  
+psping -r -w 1 -l 1m pspingserver:5201 -nobanner
 
 # Speed test - UDP upload 10KB (the max possible is a bit less than 64KB)
 # UDP download and warmup parameters don't really work for some reason
-psping -nobanner -u -l 10k pspingserver:5201  
+psping -u -l 10k pspingserver:5201 -nobanner
 
 # Bandwidth test - TCP test works, UDP doesn't
-psping -nobanner -b -l 100k pspingserver:5201  
+psping -b -l 100k pspingserver:5201 -nobanner
 ```
