@@ -243,10 +243,7 @@ sdelete -p 2 -c j:
 
 ```ps1
 # Start server on the specified address and port, create temporal firewall rules
-# For a permanent servers it's best to create a permanent rule
-# If client is terminated midstream the server no longer replies
-# So it makes sense to periodically restart server (if it senses that a 
-# port is already being used it just exists)
+# Server is very unstable, tried to use it and had lots of problems with it going unresponsive
 psping -f -s 0.0.0.0:5201
 
 # Delay test - TCP establish-drop connection
