@@ -241,12 +241,15 @@ sdelete -p 2 -c j:
 
 ## PsPing
 
+It also can output histograms that can be analysed in Excel.
+
 ```ps1
 # Start server on the specified address and port, create temporal firewall rules
 # Server is very unstable, tried to use it and had lots of problems with it going unresponsive
+# Only useful for a short term controlled test
 psping -f -s 0.0.0.0:5201
 
-# Delay test - TCP establish-drop connection
+# Delay test - TCP establish-drop connection, works with any server
 psping -i 0 pspingserver:5201 -nobanner
 
 # Speed test - TCP upload 1MB, 1 warmup attempt instead of 5 default
@@ -262,3 +265,7 @@ psping -u -l 10k pspingserver:5201 -nobanner
 # Bandwidth test - TCP test works, UDP doesn't
 psping -b -l 100k pspingserver:5201 -nobanner
 ```
+
+## TcpView
+
+Can show what processes listen to what ports. Has statisstics, process details, IP and services resolution.
