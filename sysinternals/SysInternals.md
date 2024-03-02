@@ -269,3 +269,14 @@ psping -b -l 100k pspingserver:5201 -nobanner
 ## TcpView
 
 Can show what processes listen to what ports. Has statisstics, process details, IP and services resolution.
+
+## ClockRes
+
+Shows the current system clock resolution that controls the time allocated to each thread by the scheduler. Use `sudo powercfg /energy` to find out what app set the clock resolution to the non-default value.
+
+## CoreInfo
+
+```ps1
+# Cores information
+coreinfo -c -nobanner
+```
