@@ -56,6 +56,24 @@ Creates mini or full process dump on a condition.
   - Instead of executable name you can specify UWP package name as can be resolved via `HKCU\Software\Classes\ActivatableClasses\Package` and optionally add `!AppName` to it.
 - `-i` in the current folder would attach procdump as the AutoEnabled debugger making it trigger for every un-captured exception. `-u` to unregister.
 
+From "The Case of the Missing Crash Dump".
+
+```ps1
+# Trying to dump exception that word shows in "Microsoft Word has stopped working" dialog
+procdump -e -ma winword.exe c:\temp\word.dmp
+
+# Turns out word handles second-chance exception with this dialog and thus procdump
+# doesn't have a chance to capture it as well. Let's study how many first-chance
+# exceptions does the word generate.
+procdump.exe -e 1 -f "" winword.exe c:\temp
+
+# There was actually only one first-chance exception thrown (that is quite unusual,
+# normally programs capture and handle tons of exception with their own handlers).
+# Anyway, let's collect dump when this exception is being thrown. The full exception
+# name was "c0000005.ACCESS_VIOLATION" the filter could have used any substring of it.
+procdump.exe -ma -n 10 -e 1 -f c0000005 winword.exe c:\temp
+```
+
 ## PsGetSid
 
 ```ps1
