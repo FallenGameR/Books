@@ -56,6 +56,24 @@ Creates mini or full process dump on a condition.
   - Instead of executable name you can specify UWP package name as can be resolved via `HKCU\Software\Classes\ActivatableClasses\Package` and optionally add `!AppName` to it.
 - `-i` in the current folder would attach procdump as the AutoEnabled debugger making it trigger for every un-captured exception. `-u` to unregister.
 
+From "The Case of the Missing Crash Dump".
+
+```ps1
+# Trying to dump exception that word shows in "Microsoft Word has stopped working" dialog
+procdump -e -ma winword.exe c:\temp\word.dmp
+
+# Turns out word handles second-chance exception with this dialog and thus procdump
+# doesn't have a chance to capture it as well. Let's study how many first-chance
+# exceptions does the word generate.
+procdump.exe -e 1 -f "" winword.exe c:\temp
+
+# There was actually only one first-chance exception thrown (that is quite unusual,
+# normally programs capture and handle tons of exception with their own handlers).
+# Anyway, let's collect dump when this exception is being thrown. The full exception
+# name was "c0000005.ACCESS_VIOLATION" the filter could have used any substring of it.
+procdump.exe -ma -n 10 -e 1 -f c0000005 winword.exe c:\temp
+```
+
 ## PsGetSid
 
 ```ps1
@@ -208,6 +226,77 @@ accesschk -ns $env:USERNAME 'C:\Program Files\'
 
 # Looks like -o option may use usefil for resolving the user name in domain scenarios
 # And -i option for looking up where inheritance rules are broken and access is set explicitly
+```
+
+## LiveKd
+
+- can debug kernel of a system that was not booted in debug mode
+- can debug guest Hyper-V VMs from the host
+- without -m/-ml debugger works in eventually consistent mode and can work with scarse resources
+- with -m/-ml dump is consistent, it represents point-in-time view of the system
+
+## ListDLLs
+
+- can find a loaded dll and tell if:
+  - it was not signed (not original)
+  - it was relocated from the original load address (injction)
+- doesn't list resource dlls (they are loaded as data), process explorer does
+
+```ps1
+# What processes loaded crypt32.dll
+listdlls -d crypt32
+
+# List dlls loaded from that folder
+listdlls -d "program files"
+```
+
+## SDelete
+
+```ps1
+# Erase free zpace on a drive replacing it with random data, 2 passes
+sdelete -p 2 -c j:
+```
+
+## PsPing
+
+It also can output histograms that can be analysed in Excel.
+
+```ps1
+# Start server on the specified address and port, create temporal firewall rules
+# Server is very unstable, tried to use it and had lots of problems with it going unresponsive
+# Only useful for a short term controlled test
+psping -f -s 0.0.0.0:5201
+
+# Delay test - TCP establish-drop connection, works with any server
+psping -i 0 pspingserver:5201 -nobanner
+
+# Speed test - TCP upload 1MB, 1 warmup attempt instead of 5 default
+psping -w 1 -l 1m pspingserver:5201 -nobanner
+
+# Speed test - TCP download 1MB, 1 warmup attempt instead of 5 default
+psping -r -w 1 -l 1m pspingserver:5201 -nobanner
+
+# Speed test - UDP upload 10KB (the max possible is a bit less than 64KB)
+# UDP download and warmup parameters don't really work for some reason
+psping -u -l 10k pspingserver:5201 -nobanner
+
+# Bandwidth test - TCP test works, UDP doesn't
+psping -b -l 100k pspingserver:5201 -nobanner
+```
+
+## TcpView
+
+Can show what processes listen to what ports. Has statisstics, process details, IP and services resolution.
+
+## ClockRes
+
+Shows the current system clock resolution that controls the time allocated to each thread by the scheduler. Use `sudo powercfg /energy` to find out what app set the clock resolution to the non-default value.
+
+## CoreInfo
+
+```ps1
+# Cores information
+coreinfo -c -nobanner
 ```
 
 ## AccessEnum
