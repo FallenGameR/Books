@@ -302,3 +302,47 @@ Shows the current system clock resolution that controls the time allocated to ea
 # Cores information
 coreinfo -c -nobanner
 ```
+
+## AccessEnum
+
+Checks who have access to a particular folder. Network share paths are not supported.
+
+## Streams
+
+Allow to see if there are alternative streams in the files.
+
+```ps1
+# Write and read alternative stream from a file
+cmd /c "echo alloha > test.txt:altdata"
+cmd /c "more < test.txt:altdata"
+streams .\test.txt -nobanner
+
+# Recuresivelly remove marker that is added to the files downloaded from the internet
+streams -s -d downloads
+```
+
+## FindLinks
+
+Finds all the hardlinks that point to that file
+
+```ps1
+# Will show the link to WinSxS (side-by-side component store)
+findlinks C:\WINDOWS\system32\notepad.exe -nobanner
+
+# To do the same in latest Windows OSes (shows more links for some reason)
+fsutil hardlink list C:\WINDOWS\system32\notepad.exe 
+```
+
+## DiskView
+
+Shows cluster view of files. Uses defragmentation API. Small files less that 4kb are stored directly in the `Master File Table`.
+
+## Binary file compare
+
+This is a feature of Windows, but I learned about it only via SysInternals.
+
+```ps1
+"me mo" > a.txt
+"me mi" > b.txt
+fc.exe /b a.txt b.txt
+```
