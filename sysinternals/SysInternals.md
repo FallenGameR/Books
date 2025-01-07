@@ -38,6 +38,10 @@
 - `F4` and `Shift-F4` for quick navigation between highlighted items, also an event properties have navigation buttons
 - `F6` and `Shift-F6` for quick navigation between bookmarked items, `Ctrl-B` to toggle a bookmark
 
+```ps1
+.\procmon.exe /AcceptEula /LoadConfig .\SkypeFilter.pmc /BackingFile .\output.pml /Quiet
+```
+
 ### Injecting custom debug traces from your program into Procmon
 
 - Enable profiling events toggle
