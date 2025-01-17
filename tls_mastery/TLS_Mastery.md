@@ -25,3 +25,16 @@ openssl s_client -brief -tls1_3 -crlf www.mwl.io:443
 
 - `-brief` skips details of TLS connection and gives a short text after which it's possible to work with the server
 - `-crlf` is alternative to `-connect` and it differs in a way how CL and LF are treated, for interactive use of web servers `-crlf` is the right switch. Unless your distro swapped it with `-connect`.
+
+## 3. Certificates
+
+DER, PEM, CRT are different certificate encodings (like ASCII and UTF8), one can convert from one to another.
+
+```bash
+# To read a certificate using particular encoding
+openssl x509 -in cert_file -inform der -text -noout
+```
+
+- `-inform` is the incoming format that specifies in encoding the cert_file uses. **File extensions may be misleading here**.
+- `-text` means to provide human-readable output (don't imply comprehension).
+- `-noout` means prevent displaying of the whole certificate
