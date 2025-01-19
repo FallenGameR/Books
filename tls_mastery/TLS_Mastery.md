@@ -63,9 +63,11 @@ openssl pkcs12 -export -out site.p12 -inkey privkey.pem -in cert.pem -certifile 
 
 # View pkcs file
 openssl pkcs12 -info -in site.p12
+openssl pkcs12 -info -in site.p12 -nodes
 ```
 
 - `-export` create PKCS archive file
 - `-inkey` private key
 - `-in` certificate file
 - `-certfile` additional certificates (that form the chain of trust to a Certificate Authority). Without the whole chain a certificate can not be validated.
+- `-nodes` to see the private key content unencrypted
