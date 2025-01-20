@@ -31,7 +31,7 @@ openssl s_client -brief -tls1_3 -crlf www.mwl.io:443
 DER, PEM, CRT are different certificate encodings (like ASCII and UTF8), one can convert from one to another.
 
 - DER (Distinguished Encoding Rules) is a short binary encoding, common for the Certificate Revocation Lists.
-- PEM (Privacy-Enhanced Mail) is a text encoding, can be used to setup certs via web UI. It is base64 encoded DER with header and footer that says that is inside. Header is more trustworthy than file extension.
+- PEM (Privacy-Enhanced Mail) is a text encoding, can be used to setup certs via web UI. It is base64 encoded DER with header and footer that says that is inside. Header is more trustworthy than file extension. `.crt` extension frequently used for it.
 
 ```bash
 # To read a certificate using particular encoding
@@ -71,3 +71,4 @@ openssl pkcs12 -info -in site.p12 -nodes
 - `-in` certificate file
 - `-certfile` additional certificates (that form the chain of trust to a Certificate Authority). Without the whole chain a certificate can not be validated.
 - `-nodes` to see the private key content unencrypted
+ 
