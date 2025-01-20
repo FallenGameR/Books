@@ -71,4 +71,3 @@ openssl pkcs12 -info -in site.p12 -nodes
 - `-in` certificate file
 - `-certfile` additional certificates (that form the chain of trust to a Certificate Authority). Without the whole chain a certificate can not be validated.
 - `-nodes` to see the private key content unencrypted
- 
