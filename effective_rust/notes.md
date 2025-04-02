@@ -28,6 +28,15 @@
 ## Item 8 - Familiarize yourself with reference and pointer types
 
 - Both `&Point` and `Box<Point>` are pointers that occupy 8 bytes of space on a 64-bit machine.
-- Both can be used in a function that expects a reference to a Point `fn shot(pt: &Point)`.
+- Both can be used in a function that expects a reference to a Point `fn shot(pt: &Point)`. This is achieved by the `Deref` trait implemented for `Box<T>`.
 - But the memory for the `Point` in `&Point` is allocated on the stack and it's lifetime is bound to the block that defines it.
 - And the memory for the `Point` in `Box<Point>` is allocated on the heap, meaning it would outlive the current block and it would need to be de-allocated elsewhere.
+
+- `AsRef` and `AsMut` allow conversions to a specific type of a reference. For String, for example, `&my_string` would implicitly coerce the type to `&str`. But one can use `AsRef<u8>`, `AsRef<OsStr>`, `AsRef<Path>`, `AsRef<str>`.
+- The call would look like `let path = AsRef::<Path>::as_ref(&test);` or shorter `let path: &Path = test.as_ref();`
+
+- `&T` and `Box<T>` don not store information what type they are pointing to, this is ephemeral info known only the the compiler
+- Slices `&[T]` and Trait Objects `&dyn T` do store additional type information and thus are called the fat pointers.
+- Slices store the length of the collection (+8 bytes on 64-bit machine). Note that slice notation uses include start, exclusive end. So `[2..4]` would have 2 elements `[2]` and `[3]`.
+- Slices can't be instantiated directly, but can be casted from either static collection `array` where number of elements known at compile time, or dynamic collection `vector` where lib allocates and deallocates memory based on usage.
+- Trait Objects additionally store the pointer to the `vtable` that contains method implementations for the said trait
