@@ -45,7 +45,7 @@
 
 - `Borrow<T>` can be used to generalize functions that could work either on references or with moved variables (READ)
 - `ToOwned` can be used to generalize functions that could work either on references or with moved variables that become locally owned items (WRITE)
-- `Cow` holds either borrowed or owned data, it optimized cases when most of the time you just read the data, but occasionally need to write it (READ-WRITE)
+- `Cow` is optimization that holds either borrowed or owned data, it is designed for cases when most of the time you just read the data, but occasionally need to write it (READ-WRITE)
 
 - Smart pointers can look overwhelming `Rc<RefCell<Vec<T>>>`, but they aim to give the right fine-grained pointed semantic
 - `Box<T>` - single owner, like `unique_ptr`
@@ -54,11 +54,11 @@
 - `RefCell<T>` - allow to modify the owned item. With `Rc<T>` that would only be possible if nobody else is able to modify it, like if there is only one user that borrows it.
   - this type allows to violate the borrow checker and move the single ownership check from the compile time to the runtime. Meaning you can modify stuff even with `&self` non-mutable reference. This is called interior mutability in Rust lingo. This is achieved by storing the current number of borrows for the owned item.
   - on API side the user would need to either use `try_borrow` and handle `Result` or assume the borrow would work with `borrow` and be ok that a `panic` would happen if the assumption wrong
-- `Cell<T>` relies on `Copy<T>` to produce a bit-by-bit valid copy of `T` that is copied back and forth by it's get and set methods. So instead modifying an existing item you always recreate a new one, like `prototype` in JavaScript
+- `Cell<T>` is optimization that relies on `Copy<T>` to produce a bit-by-bit valid copy of `T` that is copied back and forth by it's get and set methods. So instead modifying an existing item you always recreate a new one, like `prototype` in JavaScript
 
 - All of the above mentioned smart pointers are for a single thread use only, they can't handle simultaneous access from multiple threads
 - `Arc<T>` is multithreaded version of `Rc<T>` that use atomic counters internally, but similarly to `Rc<T>` it doesn't permit internal mutability (compile time check that only one code path can mutate the item)
-- `Mutex` ensures that only one thread can mutate the item
-
+- `Mutex` ensures that only one thread can mutate the item, similar to `RefCell` it doesn't implement any pointer traits but ha a method that returns `MutexGuard` that does implement them
+- `RwLock` is optimization that assumes there could be many readers but only a few writers, makes it similar to `Cow` somehow
 
 
