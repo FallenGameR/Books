@@ -91,10 +91,8 @@ let result = Vec<u8> = input
   - `Clone` runs user-defined code to create value, similar to explicit copy-constructor
   - `Copy` provides bit-by-bit equal value, it is a marker trait for Plain-Old-Data that just inherits `Clone` but actually doesn't call it and the complier is forced to use copy semantic instead of move semantic
   - `Default` creates a usable default value, similar to an explicit default constructor, can be used to fill in long structs with `..Default::default()`, can be used in [builders](#item-7---use-builders-for-complex-types)
-  - `PartialEq` allows to compare items, but it can be possible that x!=x
-  - `Eq` allows to compare items, and it is always true that x==x
-  - `PartialOrd` allows to compare and order some items
-  - `Ord` allows to compare and order all items
+  - `Eq` and `PartialEq` allow to compare items, similar to `operator==`, implemented as recursive filed-by-field comparison, `Eq` is a marker trait that assumes reflexivity meaning that that x==x is always true, distinction is important for a `NaN` float type
+  - `Ord` and `PartialOrd` allow to compare and order items, implemented as recursive filed-by-field comparison, so the field order matters. `Ord` requires `Eq`, but sometimes `PartialOrd` does make sense - try ordering subsets {1,2} {1,2,4} {1,3} {2,4}
   - `Hash` produces stable hash
   - `Debug` shows item to programmers
   - `Display` shows item to users
