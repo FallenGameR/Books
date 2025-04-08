@@ -13,19 +13,19 @@
 - stack traces are not part of the idiomatic Rust error handling. This aligns with the Rust philosophy that it would rather correctly propagate and handle error than debug it. But if stack traces are needed one can opt-in and use crates like `anyhow` and `backtrace`. But stack traces are costly. `thiserror` and `anyhow` are created by the same author, btw.
 - use `thiserror` for libs - errors preserve concrete detailed error information and don't impose extra libs on the users (handled with enums), `anyhow` for apps - to present the error details to the users/devs and to cope with various errors from different libraries (handled with dynamic dispatch)
 
-## Item 6 - Embrace the newtype pattern
+### Item 6 - Embrace the newtype pattern
 
 - Newtype pattern makes code more robust since it handles unit conversions correctly automatically and there is no ambiguity of redefining behavior for the same traits (abstract classes) by different crates (libs/modules) (the orphan rule). But it causes dev to write boilerplate code for implementing common traits like `#[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd)]` plus `impl fmt::Display`.
 - The mitigation of the orphan rule is is a common problem for serialization libs like `serde`. These libs provide some convenience mechanism to handle it.
 
-## Item 7 - Use builders for complex types
+### Item 7 - Use builders for complex types
 
 - Newtype pattern also causes dev to write boilerplate builder code. There are two conventions:
   - chain-calls to fill in the fields and consume the builder in the last build() call
   - use modifiable builder variable and reply on clone in one or several the build() calls
 - It is possible to reduce the boilerplate code by using `derive_builder` crate, but then your lib is adding a dependency on this crate. This seems a type of library that is quite optional. It's like using a Mocks lib in C#.
 
-## Item 8 - Familiarize yourself with reference and pointer types
+### Item 8 - Familiarize yourself with reference and pointer types
 
 - Both `&Point` and `Box<Point>` are pointers that occupy 8 bytes of space on a 64-bit machine.
 - Both can be used in a function that expects a reference to a Point `fn shot(pt: &Point)`. This is achieved by the `Deref` trait implemented for `Box<T>`.
@@ -61,7 +61,7 @@
 - `Mutex` ensures that only one thread can mutate the item, similar to `RefCell` it doesn't implement any pointer traits but ha a method that returns `MutexGuard` that does implement them
 - `RwLock` is optimization that assumes there could be many readers but only a few writers, makes it similar to `Cow` somehow
 
-## Item 9 - Consider using iterator transforms instead of explicit loops
+### Item 9 - Consider using iterator transforms instead of explicit loops
 
 - In Rust one would see something like `filter(|x| *x % 2 == 0)`. So the `*x` part is necessary visual noise because of the borrowing rules.
 - Every collection can be moved into a consuming iterator via `into_iter` that is called automatically in `for( item in collection )` statements. After iterating through the collection that collection is gone. It may be not evident unless the iterated thing can't be copied. If `T` implements `Copy` you may not see that behavior since you would be working on the bitwise items copy.
@@ -84,3 +84,17 @@ let result = Vec<u8> = input
   .map(|v| <u8>::try_from(v))
   .collect::<Result<Vec<_>,<_>>>()?;
 ```
+
+### Item 10 - Familiarize yourself with standard traits
+
+- Rust uses traits as generic-based interfaces. There are lots of very basic ones that are similar to copy-constructors, destructors, equality and assignment operators. For these traits the implementation details are boilerplate and Rust provides standard macros. Use the `#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialPrd, Ord, Hash)]` macros when needed.
+  - `Clone` runs user-defined code to create value, similar to explicit copy-constructor
+  - `Copy` provides bit-by-bit equal value, it is a marker trait for Plain-Old-Data that just inherits `Clone` but actually doesn't call it and the complier is forced to use copy semantic instead of move semantic
+  - `Default` creates a usable default value, similar to an explicit default constructor, can be used to fill in long structs with `..Default::default()`, can be used in [builders](#item-7---use-builders-for-complex-types)
+  - `PartialEq` allows to compare items, but it can be possible that x!=x
+  - `Eq` allows to compare items, and it is always true that x==x
+  - `PartialOrd` allows to compare and order some items
+  - `Ord` allows to compare and order all items
+  - `Hash` produces stable hash
+  - `Debug` shows item to programmers
+  - `Display` shows item to users
