@@ -96,3 +96,20 @@ let result = Vec<u8> = input
   - `Hash` produces stable hash, needs to provide same have for `Eq` items
   - `Debug` shows item to programmers `{:?}`, similar to `operator<<`, automatically derived, Rust implementation may change between releases, useful to have it by default unless a type contains sensitive information, use `#![warn(missing_debug_implementations)]` lint
   - `Display` shows item to users `{}`, similar to `operator<<`, got be be implemented, developer can enforce stable convention for parsable or localized output
+
+### Item 11 - Implement the Drop trait for RAII patterns
+
+- `drop` doesn't have any return value. So if freeing up some resource may fail a common practice would be to add `release` method that returns `Result`.
+
+### Item 12 - Understand the trade-offs between generics and trait objects
+
+- Generics (trait bounds) are similar to C++ templates with types enforced in runtime. E.g. `where T: Draw` or `<T: Draw>` or `draw: &impl Draw`, although the last one prohibits for the caller to specify the needed override `on_screen::<Circle>(&c)`. Internally compiler produces type-specific code that knows how to work with that specific data that implements the trait bounds. Operations happen on stack and CPU cache is used.
+- Trait objects `&dyn Draw` are fat pointers that may reference the data on the heap. They point to the data and to the vtable with the trait methods. Compiler don't write data-specific code. Instead it uses indirection to call the corresponding methods in the runtime. Operations may happen on heap, CPU cache would likely be used only in the case of collections.
+- Do not assume that trait objects are significantly slower without a proof of a measured bottleneck
+- Generics allow to specify **multiple traits** and thus allow to define conditional behavior for types that implement multiple interfaces. Doing the same thing for trait objects is possible but cumbersome `trait DebugDraw: Debug + Draw {}` and `impl<T: Debug + Draw> DebugDraw for T {}`. Combinations of trait would kill maintainability of this approach.
+
+- This notation is not analog to object oriented inheritance `trait Shape: Draw`. In OOP that means that `Shape-is-a-Draw`. In Rust that notations means `Shape additionally implements Draw`.
+- This is implemented by combining several `vtables` from different bounds that a trait implements.
+- As a consequence in Rust till 1.86 (April 2025) there was no way to upcast `(BaseDraw) ChildShape` - internal vtables were not composed in a way to support this. And that violated the OOP Liskov substitution principle - be able to replace objects of superclass with objection of subclass.
+- But since `1.86` it is possible to do `fn upcast(x: &dyn Sub) -> &dyn Super { x // implicit coercion }`. So a trait object argument `&dyn Shape` can be passed to another function that accepts `&dyn Draw`. Yay!
+

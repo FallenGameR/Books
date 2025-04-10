@@ -2,3 +2,6 @@ devs
 enums
 Newtype
 parsable
+vtable
+Liskov
+vtables
