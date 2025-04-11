@@ -85,6 +85,8 @@ let result = Vec<u8> = input
   .collect::<Result<Vec<_>,<_>>>()?;
 ```
 
+## Chapter 2: Traits
+
 ### Item 10 - Familiarize yourself with standard traits
 
 - Rust uses traits as generic-based interfaces. There are lots of very basic ones that are similar to copy-constructors, destructors, equality and assignment operators. For these traits the implementation details are boilerplate and Rust provides standard macros. Use the `#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialPrd, Ord, Hash)]` macros when needed.
@@ -112,4 +114,40 @@ let result = Vec<u8> = input
 - This is implemented by combining several `vtables` from different bounds that a trait implements.
 - As a consequence in Rust till 1.86 (April 2025) there was no way to upcast `(BaseDraw) ChildShape` - internal vtables were not composed in a way to support this. And that violated the OOP Liskov substitution principle - be able to replace objects of superclass with objection of subclass.
 - But since `1.86` it is possible to do `fn upcast(x: &dyn Sub) -> &dyn Super { x // implicit coercion }`. So a trait object argument `&dyn Shape` can be passed to another function that accepts `&dyn Draw`. Yay!
+
+- Trait objects can't implement `Clone` due to the object safety rules. Trait objects are passed as fat pointer arguments. But clone creates a copy of the object on stack. Rust generally doesn't know at runtime how much space an object would occupy on stack and disallows it. `Box<Self>` theoretically should be safe to return, but as the time of writing the book Rust was 1.7 and [it was not possible](https://github.com/rust-lang/rust/issues/47649).
+- In case compiler knows the type size via `Sized` marker trait this restriction is alleviated. But methods that return Self still can't be called.
+- Overall Rust tends to prefer generics, and one can say that trait objects deliberately erase their type.
+- Dynamically loaded code (via `dlopen`) doesn't have source code and thus generics can't be generated, only trait objects can be used
+
+## Chapter 3: Concepts
+
+### Item 14 - Understand lifetimes
+
+- Lifetimes are fundamentally related to the stack
+- Stack holds state relevant to the currently executed function
+- Compiler associates every `&` type with a lifetime `'` which sometimes can be hidden
+- Lifetime is the period when the value stays at the same address on the stack, meaning `&` references to it would be valid - from value creation to drop or move
+- Rust moves values on the stack, from stack to heap and from heap to stack
+- For unnamed variables the lifetime behaves as if the temp value is dropped when it is not needed, so `let x = f((a+b)*2);` is expanded to something like:
+
+  ```rs
+  let x = {
+    let sum = a + b;
+    {
+      let mul = sum * 2;
+      f(mul)
+    } // mul drop
+  }; // sum drop
+  ```
+
+- This is why the following code doesn't compile. Temp variable that holds the function argument is dropped. To fix it this variable needs to be explicitly pinned.
+
+  ```rs
+  let var: &Item = return_reference(&mut Item{ value: 42});
+  // can't use var.value - referenced Item is dropped just after the function call and before var asignment
+  ```
+
+
+
 
