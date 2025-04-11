@@ -126,7 +126,7 @@ let result = Vec<u8> = input
 
 - Lifetimes are fundamentally related to the stack
 - Stack holds state relevant to the currently executed function
-- Compiler associates every `&` type with a lifetime `'` which sometimes can be hidden
+- Compiler associates every `&` type with a lifetime `'` which sometimes can be hidden (this is called lifetime elision), but it is always `&'lifetime variable` internally
 - Lifetime is the period when the value stays at the same address on the stack, meaning `&` references to it would be valid - from value creation to drop or move
 - Rust moves values on the stack, from stack to heap and from heap to stack
 - For unnamed variables the lifetime behaves as if the temp value is dropped when it is not needed, so `let x = f((a+b)*2);` is expanded to something like:
