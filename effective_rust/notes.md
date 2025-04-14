@@ -126,7 +126,7 @@ let result = Vec<u8> = input
 
 - Lifetimes are fundamentally related to the stack
 - Stack holds state relevant to the currently executed function
-- Compiler associates every `&` type with a lifetime `'` which sometimes can be hidden (this is called lifetime elision), but it is always `&'lifetime variable` internally
+- Compiler associates **every** referece `&` type with a lifetime `'` which sometimes can be hidden (this is called lifetime elision), but it is always `&'lifetime variable` internally. Data structures do not use elision rules and need to be annotated explicitly.
 - Lifetime is the period when the value stays at the same address on the stack, meaning `&` references to it would be valid - from value creation to drop or move
 - Rust moves values on the stack, from stack to heap and from heap to stack
 - For unnamed variables the lifetime behaves as if the temp value is dropped when it is not needed, so `let x = f((a+b)*2);` is expanded to something like:
@@ -148,6 +148,16 @@ let result = Vec<u8> = input
   // can't use var.value - referenced Item is dropped just after the function call and before var asignment
   ```
 
+- `static` is more strong than `const`. Static means it is pinned in memory. The constants may be replicated by the complier - so each would have a lifetime of a program but may have a different address. Also `const` values may have a drop desructor - so the pin property is lost for thouse.
+- Heap-allocated but never freed variables satisfy the `'static` lifetime constraint. But `Box<T>` is not enough - it can be dropped. To mitigate that use `Box::leak` that returns `&'static mut`.
+- `static` annotation would have a similar intent to a singleton in OOP
+- Unless leaked every heap allocated variable has an owner. The `T` lives on the heap but there is a `Box<T>` variable on the stack that owns it.
+- The chain of ownership ends in either - a stack variable or a static global variable.
 
+- Since data structures don't use lifetime elision rules they got to be annotated explicitly and that annotation is inctios - all data structures that reference it need to be annotated as well. Usually fields of a data structure has the same lifetime as the structure itself. But there can be exceptions - like the structure that holds common substring from two different strings. The fileds of LargestCommonSubstring would reference left and right variables and can be used only when references to them are still valid (they can't be moved or dropped).
 
+  ```rs
+  pub fn find_largest_common_substring<'a, 'b>(left: &'a str, right: &'b str) -> Option<LargestCommonSubstring<'a, 'b>>{ ... }
+  ```
 
+- Aligning lifetimes can be hard. Thus **prefer data structures that own their data**. If not possible use smart pointers `Rc<T>` etc. Only highly optimized code like JSON/HTML parsers should care about pinning data in memory for efficency.
