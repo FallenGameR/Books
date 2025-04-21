@@ -161,3 +161,12 @@ let result = Vec<u8> = input
   ```
 
 - Aligning lifetimes can be hard. Thus **prefer data structures that own their data**. If not possible use smart pointers `Rc<T>` etc. Only highly optimized code like JSON/HTML parsers should care about pinning data in memory for efficency.
+
+### Item 15 - Understand the borrow checker
+
+- References are always marked with `&`. If you see in code `f(value)` it means that `f` receives ownership of the `value` or it's copy if it implements `Copy` trait.
+- The borrow cheker changes the ways how you design data structures.
+- Onwer of a value can: create it, read/write, drop it and re-assign ownership (move it - create the item in new stack location and drop it on the old stack location)
+- Mutable reference can be used to read/write a value
+- Reference can be used to read a value
+
