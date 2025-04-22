@@ -170,3 +170,64 @@ let result = Vec<u8> = input
 - Mutable reference can be used to read/write a value
 - Reference can be used to read a value
 
+#### Useful techniques to fight the borrow checker
+
+- `Lifetime extension` - name a temporal variable to pin it onto stack so that a derivative variable would be able to use it.
+- `Lifetime reduction` - add extra blocks that would ensure a variable is dropped when needed, less common since Rust would drop unused variables not at the end of a block but when they are not mentioned in the code anymore. Also it is a sign that an additional method is needed here.
+- `Expand all temporal variables` of a terse expression:
+
+```rs
+// we are trying to call function that expects Option<&Item> with this guy
+let x0: Option<Rc<RefCell<Item>>> = Some(Rc::new(RefCell::new(Item {value: 42})));
+
+// instead of check_item(x.as_ref().map(|r| r.borrow().deref()));
+let x1: Option<&Rc<RefCell<Item>>> = x0.as_ref();
+let x2: Option<std::cell::Ref<Item>> = x1.map(|r| r.borrow());
+let x3: Option<&Item> = x2.map(|r| r.deref()); // returns reference to data owned by the current function
+
+// once the issue is understood the code becomes:
+let x3 = match x2 {
+  None => check_item(None),
+  Some(r) => {
+    let x4: &Item = r.deref();
+    check_item(Some(x4));
+  }
+}
+
+// or more tersly as, but that may loose code maintainability, x4 was showing why this maneuver was needed
+let x3 = match x.as_ref().map(|r1| r1.borrow()) {
+  None => check_item(None),
+  Some(r2) => check_item(Some(r2.deref())),
+}
+```
+
+- Design data structures so they would `own all of their data` and don't use references. Not possible if you need to reference the same data several times: like different kind of lookup or cyclic graphs in the data.
+- If you need to store several ways to do lookups on the same data that means you got to have several data structures and only one of them can own the data. Small ammounts of data can be just `cloned`. But this approach breaks for mutabale data.
+- Making an indirect lookup by indexes is re-introducing us to the world of dangling pointers, something that Rust should protect us against. It's better to use `Rc` and `RefCell`.
+
+```rs
+#[derive(Default)]
+pub struct GuestRegister {
+  by_arrival: Vec<Rc<RefCell<Guest>>>.
+  by_name: BTreeMap<String, Rc<RefCell<Guest>>>,
+}
+
+impl GuestRegister {
+  pub fn register_guest_arrival(&mut self, guest: Guest) {
+    let name = guest.name.clone(); // we own name String now
+    let guest = Rc::new(RefCell::new(guest)); // temp variable created here
+    self.by_arrival.push(guest.clone()); // clone is needed since in next line the guest temp var is moved
+    self.by_name.insert(name, guest); // by_name owns both key and value, but value is Rc that allows to update it's underlying data via RefCell that allows runtime mutability - we can update guest's address if needed
+  }
+
+  pub fn deregister_nth(&mut self, index: usize) -> Result<(), GuestRegisterError> {
+    if index >= self.by_arrival.len() {
+      return Err(GuestRegisterError::new("out of bounds")); // instead of panic on the next line
+    }
+
+    let guest: Rc<RefCell<Guest>> = self.by_arrival.remove(index); // move the value, no panic is possible
+    self.by_name.remove(&guest.borrow().name); // & is used the last, it takes the effect after all of the following: we borrow guest variable in runtime via Rc, then get name: String field, only then we get a reference & to it and then are doing lookup via the &str reference in a BTreeMap that stores String, the String and BTreeMap API should allow to do that kind of a thing
+    Ok(())
+  }
+}
+```
