@@ -49,8 +49,8 @@
 
 - Smart pointers can look overwhelming `Rc<RefCell<Vec<T>>>`, but they aim to give the right fine-grained pointed semantic
 - `Box<T>` - single owner, like `unique_ptr`
-- `Rc<T>` - multiple owners, like `shared_ptr` - can leak memory on circular dependencies, but allow you to have self-referencing data structures in the first place
-- `Weak<T>` - do not assume ownership to break blocked drops on cyclic data structures, like `weak_ptr`, don't prevent an underlying item to be dropped. One can declare in a tree structure root as weak pointer and children as strong ones. Then as long as the program has a code path that owns the root pointer the whole structure is in memory. But it is still possible to delete children.
+- `Rc<T>` - multiple owners, like `shared_ptr` - can leak memory on circular dependencies, but allow you to have self-referencing data structures in the first place. Usually it's used together with `RefCell`, unless you want shared ownership of unmutable data to avoid duplicating large data structure (`Box` would be enough) but reuse it in several places. E.g. in a graph structure.
+- `Weak<T>` - do not assume ownership to break blocked drops in cyclic data structures, like `weak_ptr`, don't prevent an underlying item to be dropped. One can declare in a tree structure root as weak pointer and children as strong ones. Then as long as the program has a code path that owns the root pointer the whole structure is in memory. But it is still possible to delete children.
 - `RefCell<T>` - allow to modify the owned item. With `Rc<T>` that would only be possible if nobody else is able to modify it, like if there is only one user that borrows it.
   - this type allows to violate the borrow checker and move the single ownership check from the compile time to the runtime. Meaning you can modify stuff even with `&self` non-mutable reference. This is called interior mutability in Rust lingo. This is achieved by storing the current number of borrows for the owned item.
   - on API side the user would need to either use `try_borrow` and handle `Result` or assume the borrow would work with `borrow` and be ok that a `panic` would happen if the assumption wrong
@@ -231,3 +231,43 @@ impl GuestRegister {
   }
 }
 ```
+
+- And here is example how to use smart pointers in a graph data structure.
+
+```rs
+struct TreeRoot {
+  id: TreeRootId,
+  branches: Vec<Rc<RefCell<Branch>>>, // Rc<RefCell> is similar to shared_ptr
+                                      // we reference these branches elsewhere
+}
+struct Branch {
+  id: BranchId,
+  leaves: Vec<Rc<RefCell<Leaf>>>,
+  parent: Option<Week<RefCell<TreeRoot>>>,  // Option - branch can become orphaned
+                                            // Week - branch must not prevent drop of parent (cyclic ref)
+                                            // RefCell - we have code that modifies TreeRoot from a branch method
+}
+struct Leaf {
+  id: LeafId,
+  parent: Option<Week<RefCell<Branch>>>,
+}
+
+impl Branch {
+  fn add_leaf(branch: Rc<RefCell<Branch>>, mut leaf: Leaf) {      // we get moved leaf and complete ownership of it
+    leaf.parent = Some(Rc::downgrade(&branch));                   // make it a weak pointer
+    branch.borrow_mut().leaves.push(Rc::new(RefCell::new(leaf)))  // create RefCell that gets leaf ownership
+  }
+  fn location(&self) -> String {
+    match &self.parent {
+      None => format!("<orphan>.{}", self.id.0),
+      Some(parent) => {
+        let treeRoot = parent.upgrade().expect("some other thread removed parent");
+        format!("{}.{}", treeRoot.borrow().id.0, self.id.0)
+      }
+    }
+  }
+}
+```
+
+- if you can't find the pointer semantic you want, you can use `unsafe` code that use raw pointers
+- self-referencing data structures are particularly nasty to deal with, if possible avoid them or find crates that implemented them for you like `ouroborus` that add `'this` lifetime via a macro. In async code the self-referencing is inherent and is solved via `Pin`.
