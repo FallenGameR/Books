@@ -271,3 +271,16 @@ impl Branch {
 
 - if you can't find the pointer semantic you want, you can use `unsafe` code that use raw pointers
 - self-referencing data structures are particularly nasty to deal with, if possible avoid them or find crates that implemented them for you like `ouroborus` that add `'this` lifetime via a macro. In async code the self-referencing is inherent and is solved via `Pin`.
+
+### Item 16 - Avoit writing unsafe code
+
+- `unsafe` means that programmer now is responsible to maintain Rust safety guarantees, not compiler
+- Most of the unsafe code was already written and well-tested. Here are the crates:
+  - `once_cell` - lazy singletons
+  - `rand` - randomization that is using low-level primitives available
+  - `byteorder` - convert numbers to and from bytes
+  - `cxx` - interop with C++
+- If you have to write unsafe code, wrap it in a module - it would make it easier to maintain
+- Add [safety comments](https://std-dev-guide.rust-lang.org/policy/safety-comments.html), enable clippy for reminder
+- Add more tests than usual
+- Run 'Miri' to detect issues that Rust compiler can't capture
