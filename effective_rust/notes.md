@@ -284,3 +284,28 @@ impl Branch {
 - Add [safety comments](https://std-dev-guide.rust-lang.org/policy/safety-comments.html), enable clippy for reminder
 - Add more tests than usual
 - Run 'Miri' to detect issues that Rust compiler can't capture
+
+### Item 17 - We ware of shared-state parallelism
+
+- [Fearless-Concurrency in Rust](https://blog.rust-lang.org/2015/04/10/Fearless-Concurrency/) - language-native ways to use mutithreading safely
+- Mutex poisoning is a quite a rare thing, so it's ok to use `.unwrap()` on the mutex here and let it panic if poisoning happened
+- Mutex moves borrow checking to runtime, so it another example of interior mutability
+- To ensure that each thread doesn't outlive the data it is using, wrap that data in `Arc` and clone it for each of the threads. This way the main thread doesn't need to wait for either of the spawned threads and copy of arcs can be moved into the thread function.
+- `Send` (ok to transfer between threads) and `Sync` (ok to use from mutiple threads) are both marker traits - they don't have any methods, but compiler treats them in a special way. Both traits are implemented and auto-inherited unless the type is annotated that it doesn't now have these traits.
+  - `Sync` can be seen as `&T` is ok to transfer between threads.
+  - `Sync` doesn't care about `&mut T` references since they gurantee that there is only one user. It only is applicable to `&T` since these references may have iterior mutability - meaning satisfying the borrow checker at runtime.
+- `Rc<T>` does not have `Send` since it does not count usages in a thread-safe way. Use `Arc` instead.
+- `Cell<T>` and `RefCell<T>` do not have `Sync` since they don't implement interior mutability in a thread-safe way. Use `Mutex` (exclusive access) and `RwLock` (several readers, one writer) instead.
+- Raw pointers don't have either `Send` or `Sync`. Use unsafe code and satisfy borrow checker manually, pal.
+
+- Deadlocks are still possible when two threads access two mutex-protected data structures that have two fields and the fields access is AB in first thread but BA in second thread. The books calls this issue the `lock inversion`. To solve either:
+  - reduce the scope of locks with extra `{}` so that at the same time only one resource is locked, not multiple. Smaller focused methods help a lot. But this may lead to data consistency problem - when modification of every piece of the data is correct but data taken together doesn't make sense, like there is a game with a player that is absent from the players list.
+  - lock both data structures with the same lock on a higher level. This is the right way to do it.
+
+- Another way to solve this is by using `channels` that share memory by communicating.
+
+- Another useful tips to handle deadlocking:
+  - don't return MutexGuard from functions
+  - don't use closures with locks held
+  - add deadlock detection tools: `no_deadlocks`, `parking_lot::deadlock`, `ThreadSanitizer`
+  - prefer code that is so simple it is obviously not wrong
