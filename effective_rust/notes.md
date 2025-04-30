@@ -309,3 +309,20 @@ impl Branch {
   - don't use closures with locks held
   - add deadlock detection tools: `no_deadlocks`, `parking_lot::deadlock`, `ThreadSanitizer`
   - prefer code that is so simple it is obviously not wrong
+
+### Item 18 - Don't panic
+
+- `panic` by default would terminate the thread that issued it, there is an option that looks like an exception handler `catch_unwind`, but it is really not it - that's overridable behaviour, and Rust don't rely on exceptions. `catch_unwind` is really needed for FFI interop code so that panics don't propogate to the non-Rust code.
+- compiler option in `cargo.toml` decides if panic terminates the thread or the process, and `WebAssembly` always aborts disregarding any settings
+- also exceptions can leave data structures in an inconsistent state, this is so hard to achieve in C++ that [Google bans exceptions in C++ code](https://google.github.io/styleguide/cppguide.html#Exceptions), the complexity goes even higher for templated code
+
+- good rule of thumb is to allow panic/unwrap/expect if you have control of `main`
+- for libraries it is ok panic/unwrap/expect if the operation has very small changes of failure and you do not want your users to litter their code with unwraps
+- similarly library may panic if it sees a datastructure that became corrupted
+- libraries should document all their panic code paths - this is part of the library's contract - e.g. `String::from_utf8` and `String::from_utf8_unchecked`
+
+- all of the following can result in a panic - `panic/unwrap/expect/unreachable/unwrap_err/expect_err`, but also `slice[index]` and `x/y` may panic
+- for enforcing `let's don't panic` rule a `no_panic` crate can be used for the build system
+
+
+
