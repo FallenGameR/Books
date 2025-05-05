@@ -324,5 +324,16 @@ impl Branch {
 - all of the following can result in a panic - `panic/unwrap/expect/unreachable/unwrap_err/expect_err`, but also `slice[index]` and `x/y` may panic
 - for enforcing `let's don't panic` rule a `no_panic` crate can be used for the build system
 
+### Item 20 - Avoid the temptation to over-optimize
 
+- Just allows to create zero-copy non-allocating algs safely, but this doesn't mean that every your alg implementation needs to be zero-copy non-allocting. They come with at a cost of usability and maintainability.
+- Lifetimes start to matter a lot here. If a server processes incoming stream of bits, their lifetime is bound to the incomming messages. But to store and return them later on the server needs to copy these bits somewhere.
+- And then there is a question of memory fragmentation. The usage of the incoming and stored data patterns is different. Incoming data from source is not aware of other data from other sources. But the server has to store relavant data organized by fast access and by storing only what is needed close togehter in memory.
 
+- Programmers want to get efficient because Rust forces every copy to be explicit as in `to_vec()` or `.clone()` or by making an explicit allocation via `Box::new()`. C++ on the other hand did an implicit copy via copy-constructors and assignment operators.
+  - Exception here are the cypes that implement `Copy` trait, but if this trait is implemented it means that the copies are cheap (like they can just be a copy of a register)
+- Making an operation visible and explicit shouldn't be justify optimizing it away on it's own. It comes with a cost of usability and maintainability.
+- A good rule of thumb strategy is optimize for `usability` first and address `performance` concerns only when the permormance *really imposees a problem* with some benchmarks clearly showing it.
+
+- So be cool about using `.clone()` when needed and use `Arc` when you want pass data between threads.
+- Smart pointers are not the last resort, often they allow you to achive *simpler, more maintainable and more usable design*.
