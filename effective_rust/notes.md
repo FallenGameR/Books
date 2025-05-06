@@ -337,3 +337,12 @@ impl Branch {
 
 - So be cool about using `.clone()` when needed and use `Arc` when you want pass data between threads.
 - Smart pointers are not the last resort, often they allow you to achive *simpler, more maintainable and more usable design*.
+
+## Chapter 4: Dependencies
+
+### Item 21 - Understand what semantic verioning promises
+
+- Semver can be double checked with tools. `cargo-semver-checks` is an early attempt to check that no breaking changes were introduced and if the crate is backward compatible.
+- For checks in the license changes or the minimum supported Rust version `cargo-deny` can be used.
+- For automating dependency version bump `cargo update` or `Devendabot` can be used.
+
