@@ -346,3 +346,11 @@ impl Branch {
 - For checks in the license changes or the minimum supported Rust version `cargo-deny` can be used.
 - For automating dependency version bump `cargo update` or `Devendabot` can be used.
 
+### Item 25 - Manage your dependencies
+
+- Use `cargo tree` to see your list of dependencies. It is ok to reference the same crate under different versions as long as you don't expose types from this crate in your public API.
+- For resolving version incompatibilities (same crate, different versions, re-used in API) for good you can use the following arguments:
+  - `--invert` show dependency on specific crate
+  - `--edges features` - show what crate features are used and if they can be unified
+  - `--duplicates` - show what crates present in the graph under different versions
+
