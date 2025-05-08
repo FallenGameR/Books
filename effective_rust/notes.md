@@ -351,6 +351,13 @@ impl Branch {
 - Use `cargo tree` to see your list of dependencies. It is ok to reference the same crate under different versions as long as you don't expose types from this crate in your public API.
 - For resolving version incompatibilities (same crate, different versions, re-used in API) for good you can use the following arguments:
   - `--invert` show dependency on specific crate
-  - `--edges features` - show what crate features are used and if they can be unified
+  - `--edges features` - show what crate features are used after unification
   - `--duplicates` - show what crates present in the graph under different versions
+
+### Item 26 - Be wary of feature creep
+
+- Features share namespace with crate names - an optionally inculded crate is actually implemented as a feature. Meaning that feature of crates you create need to be double-checked on `crates.io` just in case.
+- Also if different dependencies rely on different features of the same crate, Rust would do feature unification and combine all the requested features together. That means that the `features must be additive` - there is no way to remove an enabled feature in case of a conflict. Also that means adding an optional feature-enabled field of a pub struct or a method of a trair is a really bad idea.
+- N features make 2^N build combinations. Your build system needs to check them all.
+
 
