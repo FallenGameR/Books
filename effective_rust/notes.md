@@ -375,4 +375,14 @@ impl Branch {
 - Enforce checks of hyperlinks via `#![deny(broken_intra_doc_links)]`
 - Enforce public docs via `#![warn(missing_docs)]`
 
+- `examples` subfolder can contain small programs that use your crate - they are similar to integration tests
+- `tests` subfolder is the integration tests - interestingly the book doesn't mention the unit tests
+
+- For crates published to `crates.io` the docs would be automatically published to `docs.rs`
+- `crates.io` shows `README.md` on the crate's front page
+- `docs.rs` shows top level doc page generated from `//!` comments in `src/lib.rs`
+
+- Avoid repeating in text something that is already clear from the code (like types and signatures)
+- Assume reader knowledge with Rust
+- Include in text anything that's not clear from the code - it's assumptions and contracts
 
