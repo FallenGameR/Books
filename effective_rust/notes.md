@@ -386,3 +386,30 @@ impl Branch {
 - Assume reader knowledge with Rust
 - Include in text anything that's not clear from the code - it's assumptions and contracts
 
+### Item 28 - Use macros judiciously
+
+- Macros are needed for boilerplate repetatitve, deterministinc code that otherwise would have to be kept in sync manually
+- Rust macros work on AST and thus are quite safe to use, they can't accidentally capture local variables in the surrounding code, this is called `hygienic`
+- Rust has two types of macros - declarative `macro_rules!` (most common, insert code by example) and procedural `#[proc_macro]` (for derive macros mostly, operate on parsed AST tokens in some smart way)
+
+- Macro is defined only for the code that follows it, unlike regular Rust code that is visible within a module
+- `#[macro_export]` is exception - it moves the macro to the top level of a crate, even if it is defined in an submodule of that crate
+- Macros calls may look like they move variables `inc_item!(x)` but this may not be the case
+- Use `cargo-expand` to see how macros are expanded and what the compiler gets to see
+
+- `$e:expr` allows to pass in an expression with a side effect like `{x +=1; x}` as a macros argument
+- to mitigate one can either evaluate expression in the macros first `let x = $e` or replace the argument type to `ident` that doesn't allow to pass expressions in the first place
+- To replicate formatting syntax used by `println!` and others use the ompiler build-in macros `format_args!($($arg)+)` in your own macros calls that do logging, for example
+
+- The proceduaral macros allow to do stuff normally reserved for dynamic languages while still keeping the complite-time gurantees and be able to approach what reflection does.
+- procedural macros live in their own create and need to depend on either the standart `proc-macro` or custom `proc-macro2`
+- There are 3 types of procedural macro - function with an argument (usually declarative macros are used instead), attribute annotation, data structure derive
+
+- The `syn` crate helps with parsing the token stream that the procedural macro accepts with the `syn::parse_macro_input!` and `syn::DeriveInput` that are much easier to deal with compared to raw tokens
+- The attribute macros can mutate the input token and they can do stuff like `#[log_invocation]` to log every function call and capture it's output
+- The derive macros add the the input token stream, they don't modify it
+- The derive macros can also use special associated atribute macros that would guide the main macro, example of that would be `#[derive(Deserialize)]` and `#[serde(default = "generate_value")]`
+
+
+
+
