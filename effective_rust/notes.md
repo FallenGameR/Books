@@ -360,4 +360,19 @@ impl Branch {
 - Also if different dependencies rely on different features of the same crate, Rust would do feature unification and combine all the requested features together. That means that the `features must be additive` - there is no way to remove an enabled feature in case of a conflict. Also that means adding an optional feature-enabled field of a pub struct or a method of a trair is a really bad idea.
 - N features make 2^N build combinations. Your build system needs to check them all.
 
+## Chater 5: Tooling
+
+### Item 27 - Document public interfaces
+
+- Doc comments use /// or //! as their prefix
+- `# Examples` area treated as tests and executed via `cargo test`
+- All code pieces need to be surrounded by `` to be properly rendered
+- Links can point to anything that can be referenced from the same scope, look like \[`Trait`\] without \
+- Document `# Panics` and `# Safety` (for unsafe code) sections when needed
+
+- Use `cargo doc` to produce the documentation
+- Use `cargo doc --open --no-deps` to open docs for the current crate
+- Enforce checks of hyperlinks via `#![deny(broken_intra_doc_links)]`
+- Enforce public docs via `#![warn(missing_docs)]`
+
 
