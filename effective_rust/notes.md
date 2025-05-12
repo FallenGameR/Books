@@ -410,6 +410,16 @@ impl Branch {
 - The derive macros add the the input token stream, they don't modify it
 - The derive macros can also use special associated atribute macros that would guide the main macro, example of that would be `#[derive(Deserialize)]` and `#[serde(default = "generate_value")]`
 
+- The chapter contains several samples of macro usages:
+  - `values_of_type!` on page 221 - filter through a collection copying values of a particular type
+  - `http_codes!` on page 221 - build a DSL that describes different http error codes
+  - `log_failure!` on page 223 - trace errors from results to the logs
+- Interesting starndart macros - `file!`, `line!` and `stringify!` (AST expression to string)
+
+- Following the principle of least surprize don't add references in the macro. The `macro(&val)` code is more readable than `macro(val)` that actually uses `&val` under the hood
+- Don't transfer control from within of a macro implicitly, the code reader expects `return` and `?` to transfer control, adding a random macro to the list is puzzling
+- Reuse existing macro when possible. For example converting to and from C structures is already implemened in `num_derive` and `strum`
+
 
 
 
