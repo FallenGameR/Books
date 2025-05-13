@@ -420,6 +420,10 @@ impl Branch {
 - Don't transfer control from within of a macro implicitly, the code reader expects `return` and `?` to transfer control, adding a random macro to the list is puzzling
 - Reuse existing macro when possible. For example converting to and from C structures is already implemened in `num_derive` and `strum`
 
+### Item 29 - Listen to Clippy
 
-
-
+- `cargo clippy` emits useful warnings covering common errors, idioms, code compactness, performance with regard to processing or allocation, readability
+- to silence false positivies use either `#[allow(clippy:some_lint)]` per item or `#![allow(clippy:some_lint)]` per crate
+- clippy is particularly helpful when learing rust since it enforces idiomatic language usage
+- *lots of the items from this book are enforced in clippy lints*
+- the [full list of clippy warnings](https://rust-lang.github.io/rust-clippy/stable/index.html) is very long and not all of them are enabled by default, the reason is - high false positive rate or they are overly-pedantic, but still it can be useful to read the disabled ones and learn the idioms
