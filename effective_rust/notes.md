@@ -427,3 +427,22 @@ impl Branch {
 - clippy is particularly helpful when learing rust since it enforces idiomatic language usage
 - *lots of the items from this book are enforced in clippy lints*
 - the [full list of clippy warnings](https://rust-lang.github.io/rust-clippy/stable/index.html) is very long and not all of them are enabled by default, the reason is - high false positive rate or they are overly-pedantic, but still it can be useful to read the disabled ones and learn the idioms
+
+### Item 30 - Write more than unit tests
+
+- in Rust unit tests sit alongside with the crate in a separate sub-module in `tests.rs` file and have access to non-pub members because of that, the module is annotated with `#[cfg(test)]`
+- integration tests sit in `tests` folder and have access only to the crate's public interface, each file in that folder is a separate Rust program that executes all the functions marked with `#[test]`
+- doc tests are build into the ducumentation and can be selectivelly executed via `cargo test --doc <item-name>`
+- examples live in `examples` folder either in separate file or folders with `main.rs` in them and represent a standalone binary that can be run via `cargo run|test --example <name>`, they are not annotated as tests. Users would base their code on examples, so they need to be added into the build system. They can be used to find out if the crate needs to bump it's semantic version. Also unlike tests examples should not use `unwrap` - they need to propogate `Result<(), Box<dyn Error>` instead.
+- benchmark tests can be done via `cargo bench` and `#[bench]` that measures an operation, at the time of writing this was an unstable feature so `cargo +nightly bench` call should have been used. To reduce compiler optimization interference use `std::hint::black_box` during tested function's calls. Consider using `criterion` crate that uses stable Rust and has graphs and statistics.
+- use fuzz tests if your code has public API that can be used by hackers, panic codepaths are particularly vulnerable to potention DoS attacks. Test via `cargo-fuzz` that is using libFuzzer under the hood. [Rust fuzz book](https://rust-fuzz.github.io/book/) has the needed recipies that boil down to calling `fuzz_target!` and `cargo +nightly fuzz run target_rs_file`. The test runs until it finds error or it runs indefinetelly, so it makes sense to time limit and only do for major releases. Also you can store already tried inputs (the `corpus`) so they would not consume CPU. If your project is popular OSS you can get Google OSS-Fuzz doing this test for you.
+- make sure to un tests over all possible crate feature and platform combinations that you have
+- for crate publishing sometimes it makes sence to separate tests into a different crate
+
+### Item 31 - Take advantage of the tooling ecosystem
+
+- [rust playground](https://play.rust-lang.org/) helpful to share samples and do linqpad-style experiments
+- `cargo fmt` - formats the code to standart conventions
+- `cargo check` - fast syntax check without compilation
+- `cargo update` - update crate dependencies to the latest versions
+- `cargo metadata` - emit crates metadata and inner-dependencies (simiar to `cargo tree`?) - this is used as input for `cargo-udeps` (remove dead code crates) and `cargo-deny` (dependency validation)
