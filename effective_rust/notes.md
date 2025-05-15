@@ -446,3 +446,14 @@ impl Branch {
 - `cargo check` - fast syntax check without compilation
 - `cargo update` - update crate dependencies to the latest versions
 - `cargo metadata` - emit crates metadata and inner-dependencies (simiar to `cargo tree`?) - this is used as input for `cargo-udeps` (remove dead code crates) and `cargo-deny` (dependency validation)
+
+### Item 34 - Control what crosses FFI (foreign function interface) boundaries
+
+- Standart C libraries are already implemented by `libc` crate
+- Rust build scripts are Rust programs that emit command line args for the compier - very flixible since they can evaluate the current environment and decide how do do the linking on the current platform
+- Mismatching C/FFI signatures do not result in an error - you would be just unsing incorrec one silently, `bindgen` tool can be used to mitiaget this problem
+- `nm` tool on Unix can be used to see how compiler mangled the names, `add` in C becomes `_add` since that allows to disambiguate that functions between libs. The linker may know of `lib1_add` and `lib2_add`, for C++ names encode the namespace and typo info to be able to disambiguate overrides (functions with the same name but different signature), like `__ZN3ns13addEii` for namespace `ns1` and two args of int32_t types (while int64_t would encode the args as `xx` instead of `ii`).
+- `c++filt` tool allows to decode these mangled names to their human-redable analog: `nm ffi-cpp-lib.o | grep add | c++filt` would give `ns1::add(int,int)`
+- because Rust uses `#[no_mangle]` option the type info is lost and compiler can't check if the FFI and lib signatures do match
+
+
