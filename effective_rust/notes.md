@@ -456,4 +456,41 @@ impl Branch {
 - `c++filt` tool allows to decode these mangled names to their human-redable analog: `nm ffi-cpp-lib.o | grep add | c++filt` would give `ns1::add(int,int)`
 - because Rust uses `#[no_mangle]` option the type info is lost and compiler can't check if the FFI and lib signatures do match
 
+- allocate and free on the same side of the FFI boundary - both of the following would be tricky to find bugs: pass a Rust reference to C and it would store it, Rust would free it later on and C would reuse freed mamory, or pass a Rust reference to C and it would free it.
+- wrap C interactions in safe Rust structs that deal with the unsafe code and handle allocating/droping
+
+- if you need to consume Rust code from other language (like C that is used as common denominator), beware that Rust also mangles the code; use `rustfilt` from `rustc-demangle` to get through name mangling, use `#[no_mangle]` for interop code - but that makes such functions to be part of a global namespace - so conisder using some common prefix like `mylib_`
+- you would need to manualy enforce Rust assumptions dealing with incoming C pointers:
+
+```rs
+let s = match unsafe { ppointer.as_ref() } {
+  Some(reference) => reference,
+  None => return 0, // explicit handling of NULL pointers
+}
+```
+
+- Pointers that Rust sends to C generally should reference heap, but wraping vars in Box is not enough, the box needs to outlive it's usage on the C side. To handle it use `into_raw` that skips dropping the owning box object. But then one would need to tell Rust when it is ok to free that object via `from_raw`. This way allocation and de-allocation happens on the same side (Rust program):
+
+```rs
+#[no_mangle]
+pub extern "C" fn new_struct_raw(v: u32) -> *mut FfiStruct {
+  let s = FfiStruct::new(v); // struct created on stack
+  let mut h = Box::new(s); // move struct to heap
+  Box::into_raw(b) // consume box and take responsibility for the heap memory
+}
+
+#[no_mangle]
+pub extern "C" fn free_struct_raw(p: *mut FfiStruct) {
+  if p.is_null() {
+    return; // NULL handling
+  }
+  let not_null = unsafe {
+    Box::from_raw(p)
+  }; // not_null is dropped here and we free allocated FfiStruct
+}
+
+```
+
+
+
 
